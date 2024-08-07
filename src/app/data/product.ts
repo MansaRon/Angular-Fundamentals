@@ -3,7 +3,7 @@ export const Products = [
         id: 1,
         price: 29.99,
         name: "Wireless Mouse",
-        quantity: 150,
+        quantity: 0,
         status: "In Stock",
         description: "A comfortable wireless mouse with ergonomic design.",
         imageUrl: "https://m.media-amazon.com/images/I/61mpMH5TzkL._AC_SL1500_.jpg"
