@@ -8,7 +8,7 @@ import { Product } from 'src/app/data/productInterface';
 })
 export class PurchaseModalComponent {
 
-  @Input() products!: Product;
+  @Input() productChild!: Product;
   @Input() isModalVisible: boolean = false;
   @Output() closeModal: EventEmitter<void> = new EventEmitter<void>();
 

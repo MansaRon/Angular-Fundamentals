@@ -23,8 +23,4 @@ export class ProductDetailsComponent implements OnInit {
     this.showModal = true;
   }
 
-  closeModal() {
-    this.showModal = false;
-  }
-
 }

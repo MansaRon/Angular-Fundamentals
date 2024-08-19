@@ -34,11 +34,11 @@
               <h3
                 class="text-base font-semibold leading-6 text-gray-900"
                 id="modal-title">
-                Deactivate account
+                {{productChild.name}} Details
               </h3>
               <div class="mt-2">
-                <p *ngIf="products.price < 700" class="text-sm text-gray-500">
-                  Item is available for discount
+                <p *ngIf="productChild.price < 700" class="text-sm text-gray-500">
+                  {{productChild.name}} is available in your location for purchase
                 </p>
               </div>
             </div>
