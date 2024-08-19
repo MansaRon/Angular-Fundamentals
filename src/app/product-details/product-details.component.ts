@@ -8,10 +8,23 @@ import { Product } from '../data/productInterface';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent implements OnInit {
+  showModal: boolean = false;
+  selectedProduct!: Product;
   products : Product[] = Products;
   
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  ngOnInit(): void {}
+
+  toggleModal() {
+    this.showModal = !this.showModal;
+  }
+
+  openModal(product: Product) {
+    this.selectedProduct = product;
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 
 }
