@@ -1,0 +1,4 @@
+Add a global interceptor
+State Management
+Have utils class
+Create pipes
