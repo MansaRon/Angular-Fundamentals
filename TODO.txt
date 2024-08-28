@@ -1,4 +1,5 @@
 Add a global interceptor
+Create guards
 State Management
 Have utils class
 Create pipes
