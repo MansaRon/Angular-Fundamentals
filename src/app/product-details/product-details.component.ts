@@ -12,7 +12,11 @@ export class ProductDetailsComponent implements OnInit {
   selectedProduct!: Product;
   products : Product[] = Products;
   
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    fetch('https://fakestoreapi.com/products')
+            .then(res => res.json())
+            .then(json => console.log(json))
+  }
 
   toggleModal() {
     this.showModal = !this.showModal;
