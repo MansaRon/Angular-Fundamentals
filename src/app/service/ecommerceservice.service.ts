@@ -16,4 +16,8 @@ export class EcommerceserviceService {
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.url);
   }
+
+  getSingleProduct(params: number): Observable<Product>{
+    return this.http.get<Product>(`https://fakestoreapi.com/products/${params}`);
+  }
 }

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ProductShopRoutingModule } from './product-shop-routing.module';
 import { ProductShopComponent } from './product-shop.component';
+import { EcommerceserviceService } from '../service/ecommerceservice.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -11,7 +13,11 @@ import { ProductShopComponent } from './product-shop.component';
   ],
   imports: [
     CommonModule,
-    ProductShopRoutingModule
+    ProductShopRoutingModule,
+    HttpClientModule
+  ],
+  providers: [
+    EcommerceserviceService
   ]
 })
 export class ProductShopModule { }

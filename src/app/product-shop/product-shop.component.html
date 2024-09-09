@@ -1,11 +1,11 @@
 <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
     <div class="bg-white rounded-lg overflow-hidden shadow-lg ring-4 ring-red-500 ring-opacity-40 max-w-sm">
         <div class="relative">
-            <img class="w-full" src="{{product?.imageUrl}}" alt="{{product?.name}}">
-            <div class="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-sm font-medium">{{product?.status}}</div>
+            <img class="w-full" src="{{product?.image}}" alt="{{product?.title}}">
+            <div class="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 m-2 rounded-md text-sm font-medium">{{product?.rating?.rate}}</div>
         </div>
         <div class="p-4">
-            <h3 class="text-lg font-medium mb-2">{{product?.name}}</h3>
+            <h3 class="text-lg font-medium mb-2">{{product?.title}}</h3>
             <p class="text-gray-600 text-sm mb-4">{{product?.description}}</p>
             <div class="flex items-center justify-between">
                 <span class="font-bold text-lg">{{product?.price}}</span>

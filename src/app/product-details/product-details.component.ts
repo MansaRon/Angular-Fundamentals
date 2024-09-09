@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Products } from '../data/product';
 import { Product } from '../data/productInterface';
+import { EcommerceserviceService } from '../service/ecommerceservice.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -10,12 +11,14 @@ import { Product } from '../data/productInterface';
 export class ProductDetailsComponent implements OnInit {
   showModal: boolean = false;
   selectedProduct!: Product;
-  products : Product[] = Products;
+  products: Product[] = [];
+
+  constructor(private ecommerce: EcommerceserviceService) {}
   
   ngOnInit(): void {
-    fetch('https://fakestoreapi.com/products')
-            .then(res => res.json())
-            .then(json => console.log(json))
+    this.ecommerce.getProducts()
+    .pipe(map(product => (this.products = product)))
+    .subscribe();
   }
 
   toggleModal() {
