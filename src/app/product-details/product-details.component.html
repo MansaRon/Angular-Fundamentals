@@ -44,8 +44,9 @@
                       alt="{{product.description}}" 
                       class="scale-75 h-full w-full object-cover object-center group-hover:opacity-75">
                     </div>
-                    <a [routerLink]="['/product-shop', product.id]" 
-                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                    <a 
+                        (click)="openModal(product)"
+                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
                         {{product.title}}
                     </a>
                     <h3 class="text-sm text-gray-700">
@@ -59,7 +60,7 @@
                     </p>
                     <button 
                         type="button" 
-                        (click)="openModal(product)"
+                        [routerLink]="['/product-shop', product.id]" 
                         class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         Purchase
                     </button>
