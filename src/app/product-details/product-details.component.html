@@ -1,42 +1,76 @@
-<div class="bg-white">
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900">
-            Product List
-        </h2>
-
-        <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-            <a *ngFor="let product of products" class="group">
-                <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                  <img src="{{product.image}}" 
-                  alt="{{product.description}}" 
-                  class="scale-75 h-full w-full object-cover object-center group-hover:opacity-75">
-                </div>
-                <a [routerLink]="['/product-shop', product.id]" 
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                    {{product.title}}
-                </a>
-                <h3 class="text-sm text-gray-700">
-                    <a>
-                      <span aria-hidden="true" class="absolute inset-0"></span>
-                      {{product.rating.rate}}
-                    </a>
-                </h3>
-                <p class="mt-1 text-lg font-medium text-gray-900">
-                    {{product.price | currency: "USD"}}
-                </p>
-                <button 
-                    type="button" 
-                    (click)="openModal(product)"
-                    class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Purchase
-                </button>
-                <app-purchase-modal
-                    [productChild]="selectedProduct" 
-                    [isModalVisible]="showModal"
-                    (closeModal)="toggleModal()">
-                </app-purchase-modal>
-            </a>
-        </div>
-
+<ng-template #mainScreen>
+    <div class="flex justify-center space-x-4">
+        <button
+          class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-400 flex items-center space-x-2"
+          type="button"
+        >
+          <svg
+            class="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+          <span>Loading</span>
+        </button>
     </div>
-</div>
+</ng-template>
+  
+
+<ng-container *ngIf="loader; else mainScreen">
+    <div class="bg-white">
+        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+            <h2 class="text-2xl font-bold tracking-tight text-gray-900">
+                Product List
+            </h2>
+    
+            <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+                <a *ngFor="let product of products" class="group">
+                    <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                      <img src="{{product.image}}" 
+                      alt="{{product.description}}" 
+                      class="scale-75 h-full w-full object-cover object-center group-hover:opacity-75">
+                    </div>
+                    <a [routerLink]="['/product-shop', product.id]" 
+                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                        {{product.title}}
+                    </a>
+                    <h3 class="text-sm text-gray-700">
+                        <a>
+                          <span aria-hidden="true" class="absolute inset-0"></span>
+                          {{product.rating.rate}}
+                        </a>
+                    </h3>
+                    <p class="mt-1 text-lg font-medium text-gray-900">
+                        {{product.price | currency: "USD"}}
+                    </p>
+                    <button 
+                        type="button" 
+                        (click)="openModal(product)"
+                        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Purchase
+                    </button>
+                    <app-purchase-modal
+                        [productChild]="selectedProduct" 
+                        [isModalVisible]="showModal"
+                        (closeModal)="toggleModal()">
+                    </app-purchase-modal>
+                </a>
+            </div>
+    
+        </div>
+    </div>
+</ng-container>

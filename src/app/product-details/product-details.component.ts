@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../data/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -12,12 +12,18 @@ export class ProductDetailsComponent implements OnInit {
   showModal: boolean = false;
   selectedProduct!: Product;
   products: Product[] = [];
+  loader = false;
 
   constructor(private ecommerce: EcommerceserviceService) {}
   
   ngOnInit(): void {
     this.ecommerce.getProducts()
-    .pipe(map(product => (this.products = product)))
+    .pipe(
+      map(product => (
+        this.products = product
+      )),
+      tap((_) => (this.loader = true))
+    )
     .subscribe();
   }
 
