@@ -13,10 +13,25 @@ export class ProductDetailsComponent implements OnInit {
   selectedProduct!: Product;
   products: Product[] = [];
   loader = false;
+  productsInCart: Product[] = [];
+  productInCart?: Product;
 
   constructor(private ecommerce: EcommerceserviceService) {}
   
   ngOnInit(): void {
+    this.getProducts();
+    const navigation = window.history.state;
+    this.productInCart = navigation.productCart as Product;
+
+    if (this.productInCart) {
+      this.productsInCart.push(this.productInCart);
+      console.log('Product in cart:', this.productsInCart);
+    } else {
+      console.error('No product found in cart');
+    }
+  }
+
+  getProducts() {
     this.ecommerce.getProducts()
     .pipe(
       map(product => (

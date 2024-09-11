@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Products } from '../data/product';
 import { Product } from '../data/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { map } from 'rxjs';
+import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-product-shop',
@@ -15,7 +16,8 @@ export class ProductShopComponent implements OnInit  {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private ecommerce: EcommerceserviceService
+    private ecommerce: EcommerceserviceService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +31,10 @@ export class ProductShopComponent implements OnInit  {
       map((response) => (this.product = response))
     )
     .subscribe();
+  }
+
+  addToCart(product?: Product) {
+    this.router.navigate(['/product-details'], {state: { productCart: product }});
   }
 
 }
