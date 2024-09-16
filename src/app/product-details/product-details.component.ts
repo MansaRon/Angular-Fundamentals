@@ -14,12 +14,13 @@ export class ProductDetailsComponent implements OnInit {
   products: Product[] = [];
   loader = false;
   productsInCart?: Product[] = [];
+  isCartModalOpen = false; // Controls modal visibility
 
   constructor(private ecommerce: EcommerceserviceService) {}
   
   ngOnInit(): void {
     this.getProducts();
-    const storedCart = localStorage.getItem('cart');
+    const storedCart = sessionStorage.getItem('cart');
     if (storedCart) {
       this.productsInCart = JSON.parse(storedCart) as Product[]; // Parse and assign to productsInCart
     }
@@ -44,6 +45,16 @@ export class ProductDetailsComponent implements OnInit {
   openModal(product: Product) {
     this.selectedProduct = product;
     this.showModal = true;
+  }
+
+  openViewCart() {
+    this.isCartModalOpen = true;
+    console.log('click me')
+  }
+
+  // Function to open the modal
+  viewCartModel() {
+    this.isCartModalOpen = !this.isCartModalOpen;
   }
 
 }

@@ -13,7 +13,7 @@ export class EcommerceserviceService {
   url = 'https://fakestoreapi.com/products';
 
   constructor(private http: HttpClient) { 
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = sessionStorage.getItem('cart');
     if (savedCart) {
       this.cart = JSON.parse(savedCart); // Load from localStorage
     }
@@ -40,6 +40,6 @@ export class EcommerceserviceService {
   }
 
   private saveCart() {
-    localStorage.setItem('cart', JSON.stringify(this.cart));
+    sessionStorage.setItem('cart', JSON.stringify(this.cart));
   }
 }
