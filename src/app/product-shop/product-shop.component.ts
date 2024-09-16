@@ -34,7 +34,11 @@ export class ProductShopComponent implements OnInit  {
   }
 
   addToCart(product?: Product) {
-    this.router.navigate(['/product-details'], {state: { productCart: product }});
+    if (product) {
+      this.ecommerce.addToCart(product);
+      console.log(this.ecommerce.getCartItems());
+      this.router.navigate(['/product-details']);
+    }
   }
 
 }
