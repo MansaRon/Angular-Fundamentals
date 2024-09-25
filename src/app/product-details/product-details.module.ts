@@ -6,7 +6,7 @@ import { ProductDetailsComponent } from './product-details.component';
 import { PurchaseModalComponent } from '../components/purchase-modal/purchase-modal.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
-import { ViewCartComponent } from '../components/view-cart/view-cart.component';
+import { ViewCartComponent } from '../components/view-cart-modal/view-cart.component';
 
 
 @NgModule({

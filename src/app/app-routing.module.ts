@@ -19,6 +19,11 @@ const routes: Routes = [
     .then(m => m.LandingPageModule) 
   },
   { 
+    path: 'view-cart', 
+    loadChildren: () => import('./view-cart/view-cart.module')
+    .then(m => m.ViewCartModule) 
+  },
+  { 
     path: '**', 
     loadChildren: () => import('./page-not-found/page-not-found.module')
     .then(m => m.PageNotFoundModule) 

@@ -55,6 +55,7 @@ export class ProductDetailsComponent implements OnInit {
   // Function to open the modal
   viewCartModel() {
     this.isCartModalOpen = !this.isCartModalOpen;
+    console.log('Cart Modal State:', this.isCartModalOpen);
   }
 
 }
