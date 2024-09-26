@@ -42,4 +42,17 @@ export class EcommerceserviceService {
   private saveCart() {
     sessionStorage.setItem('cart', JSON.stringify(this.cart));
   }
+
+  removeFromCart(productId: number) {
+    const index = this.cart.findIndex(product => product.id === productId);
+    if (index !== -1) {
+      this.cart.splice(index, 1);
+      this.saveCart(); // Update the saved cart after removing the item
+      console.log(`Product with ID ${productId} removed from cart.`);
+      console.log('Updated cart:', this.cart);
+    } else {
+      console.log(`Product with ID ${productId} not found in the cart.`);
+    }
+  }
+  
 }

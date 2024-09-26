@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../data/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { map, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-details',
@@ -16,7 +17,7 @@ export class ProductDetailsComponent implements OnInit {
   productsInCart?: Product[] = [];
   isCartModalOpen = false; // Controls modal visibility
 
-  constructor(private ecommerce: EcommerceserviceService) {}
+  constructor(private ecommerce: EcommerceserviceService, private router: Router) {}
   
   ngOnInit(): void {
     this.getProducts();
@@ -56,6 +57,10 @@ export class ProductDetailsComponent implements OnInit {
   viewCartModel() {
     this.isCartModalOpen = !this.isCartModalOpen;
     console.log('Cart Modal State:', this.isCartModalOpen);
+  }
+
+  viewItemsInCart() {
+    this.router.navigate(['/view-cart']);
   }
 
 }

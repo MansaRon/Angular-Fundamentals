@@ -8,4 +8,5 @@ export interface Product {
     price: number;
     rating: Rating;
     title: string;
+    quantity: number;
 }

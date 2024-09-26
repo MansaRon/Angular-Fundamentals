@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { ViewCartRoutingModule } from './view-cart-routing.module';
 import { ViewCartComponent } from './view-cart.component';
+import { EcommerceserviceService } from '../service/ecommerceservice.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -11,7 +13,11 @@ import { ViewCartComponent } from './view-cart.component';
   ],
   imports: [
     CommonModule,
-    ViewCartRoutingModule
+    ViewCartRoutingModule,
+    HttpClientModule
+  ],
+  providers: [
+    EcommerceserviceService
   ]
 })
 export class ViewCartModule { }
