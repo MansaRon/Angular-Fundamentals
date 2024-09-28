@@ -3,3 +3,4 @@ Create guards
 State Management
 Have utils class
 Create pipes
+Create footer for viewing cart (Appears once cart items are added)
