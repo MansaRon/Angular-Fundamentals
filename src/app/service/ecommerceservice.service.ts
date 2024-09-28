@@ -54,5 +54,36 @@ export class EcommerceserviceService {
       console.log(`Product with ID ${productId} not found in the cart.`);
     }
   }
+
+    // Method to increase the quantity of a specific product
+    increaseQuantity(productId: number) {
+      const product = this.cart.find(p => p.id === productId);
+      if (product) {
+        product.quantity++;
+        console.log(product);
+        this.saveCart(); // Save updated cart
+      }
+    }
+  
+    // Method to decrease the quantity of a specific product
+    decreaseQuantity(productId: number) {
+      const product = this.cart.find(p => p.id === productId);
+      if (product && product.quantity > 1) {
+        product.quantity--;
+        console.log(product);
+        this.saveCart(); // Save updated cart
+      }
+    }
+
+  // New function to calculate the total cost of all items in the cart
+  getCartTotal(): number {
+    return this.cart.reduce((total, product) => {
+      return total + product.price * product.quantity;
+    }, 0); // Start with 0 as the initial value
+  }  
+
+  getTaxAmount(): number {
+    return this.getCartTotal() * 0.10;
+  }
   
 }
