@@ -1,5 +1,5 @@
-<ng-container>
-    <nav class="bg-gray-800">
+
+<!-- <nav class="bg-gray-800">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div class="relative flex h-16 items-center justify-between">
             <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -10,7 +10,7 @@
                   alt="Your Company">
               </div>
             </div>
-            <div (click)="openViewCart()" class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               <div class="t-0 left-3">
                 <p class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white">
                   {{ productsInCart?.length }}
@@ -20,18 +20,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
               </svg>
             </div>
-
-            <!-- Model with cart -->
-            <app-view-cart 
-              [productsInCart]="productsInCart" 
-              [isCartModalOpen]="isCartModalOpen"
-              (closeModal)="viewCartModel()">
-            </app-view-cart>
-            <!-- Model with cart -->
           </div>
         </div>
-      </nav>      
-</ng-container>
+      </nav>       -->
 
 <ng-template #mainScreen>
     <div class="flex justify-center space-x-4">
@@ -107,10 +98,19 @@
       </div>
     </div>
 </ng-container>
- <!-- TODO: Fix this -->
+
+<!-- TODO: Fix this -->
 <ng-container *ngIf="productsInCart">
   <a (click)="viewItemsInCart()"
     class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
     View cart details
   </a>
 </ng-container>
+
+<!-- Model with cart -->
+<app-view-cart 
+  [productsInCart]="productsInCart" 
+  [isCartModalOpen]="isCartModalOpen"
+  (closeModal)="viewCartModel()">
+</app-view-cart>
+<!-- Model with cart -->
