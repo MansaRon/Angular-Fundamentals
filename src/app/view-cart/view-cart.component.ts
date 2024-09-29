@@ -8,12 +8,13 @@ import { Product } from '../data/productInterface';
   templateUrl: './view-cart.component.html',
   styleUrls: ['./view-cart.component.css']
 })
-export class ViewCartComponent implements OnInit, AfterViewInit  {
+export class ViewCartComponent implements OnInit {
 
   products?: Product[];
   numberOfItems: number = 0;
   cartTotal: number = 0;
   tax: number = 0;
+  loader = false;
 
   constructor(private ecommerce: EcommerceserviceService, private router: Router) {}
   
@@ -21,13 +22,9 @@ export class ViewCartComponent implements OnInit, AfterViewInit  {
     this.loadCart();
   }
 
-  ngAfterViewInit() {
-    // Code to run after the view has been initialized
-    console.log('View has been initialized');
-  }
-
   private loadCart() {
     const storedCart = sessionStorage.getItem('cart');
+    this.loader = true;
     if (storedCart) {
       this.products = JSON.parse(storedCart) as Product[];
     }
