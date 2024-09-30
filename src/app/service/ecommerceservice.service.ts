@@ -44,10 +44,16 @@ export class EcommerceserviceService {
   }
 
   removeFromCart(productId: number) {
+    const savedCart = sessionStorage.getItem('cart');
+  
+    if (savedCart) {
+      this.cart = JSON.parse(savedCart);
+    }
+
     const index = this.cart.findIndex(product => product.id === productId);
     if (index !== -1) {
       this.cart.splice(index, 1);
-      this.saveCart(); // Update the saved cart after removing the item
+      this.saveCart();
       console.log(`Product with ID ${productId} removed from cart.`);
       console.log('Updated cart:', this.cart);
     } else {
