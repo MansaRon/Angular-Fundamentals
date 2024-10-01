@@ -59,8 +59,4 @@ export class ProductDetailsComponent implements OnInit {
     console.log('Cart Modal State:', this.isCartModalOpen);
   }
 
-  viewItemsInCart() {
-    this.router.navigate(['/view-cart']);
-  }
-
 }

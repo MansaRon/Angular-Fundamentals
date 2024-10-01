@@ -7,8 +7,7 @@ import { NavigationBarComponent } from './components/navigation-bar/navigation-b
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NavigationBarComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

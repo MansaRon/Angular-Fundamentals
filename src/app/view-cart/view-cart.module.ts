@@ -5,7 +5,6 @@ import { ViewCartRoutingModule } from './view-cart-routing.module';
 import { ViewCartComponent } from './view-cart.component';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,8 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ViewCartRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule
+    HttpClientModule
   ],
   providers: [
     EcommerceserviceService

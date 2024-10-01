@@ -7,18 +7,24 @@ import { PurchaseModalComponent } from '../components/purchase-modal/purchase-mo
 import { HttpClientModule } from '@angular/common/http';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { ViewCartComponent } from '../components/view-cart-modal/view-cart.component';
+import { SearchBarComponent } from '../components/search-bar/search-bar.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NavigationBarComponent } from '../components/navigation-bar/navigation-bar.component';
 
 
 @NgModule({
   declarations: [
     ProductDetailsComponent,
     PurchaseModalComponent,
-    ViewCartComponent
+    ViewCartComponent,
+    SearchBarComponent,
+    NavigationBarComponent
   ],
   imports: [
     CommonModule,
     ProductDetailsRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     EcommerceserviceService
