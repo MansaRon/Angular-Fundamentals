@@ -9,18 +9,14 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class SearchBarComponent implements OnInit {
   @Output() searchFilterOutput: EventEmitter<any> = new EventEmitter<any>();
   
-  searchForm = new FormGroup({    
-    searchItem: new FormControl('')
-  });
+  searchItem: string = '';
 
   constructor() {}
 
   ngOnInit(): void {}
   
-  onSubmit() {    
-    // TODO: Use EventEmitter with form value
-    this.searchFilterOutput.emit(this.searchForm.value.searchItem);    
-    console.log(this.searchForm.value);  
+  onSearch() {
+    this.searchFilterOutput.emit(this.searchItem);   
   }
 
 }

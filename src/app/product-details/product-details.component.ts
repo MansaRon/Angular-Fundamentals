@@ -63,6 +63,5 @@ export class ProductDetailsComponent implements OnInit {
   onSearchTextChanged(searchText: string) {
     this.filterText = searchText; // Update the searchText variable
     console.log(searchText);
-    console.log(this.filterText);
   }
 }
