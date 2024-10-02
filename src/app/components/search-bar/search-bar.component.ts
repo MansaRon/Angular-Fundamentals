@@ -18,7 +18,7 @@ export class SearchBarComponent implements OnInit {
   
   onSubmit() {    
     // TODO: Use EventEmitter with form value    
-    console.warn(this.searchForm.value);  
+    console.log(this.searchForm.value);  
   }
 
 }

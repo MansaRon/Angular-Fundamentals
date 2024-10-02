@@ -10,6 +10,7 @@ import { ViewCartComponent } from '../components/view-cart-modal/view-cart.compo
 import { SearchBarComponent } from '../components/search-bar/search-bar.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavigationBarComponent } from '../components/navigation-bar/navigation-bar.component';
+import { SearchPipePipe } from '../pipes/search-pipe.pipe';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { NavigationBarComponent } from '../components/navigation-bar/navigation-
     PurchaseModalComponent,
     ViewCartComponent,
     SearchBarComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
+    SearchPipePipe
   ],
   imports: [
     CommonModule,
