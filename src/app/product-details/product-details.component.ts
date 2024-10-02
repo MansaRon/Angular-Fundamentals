@@ -16,6 +16,7 @@ export class ProductDetailsComponent implements OnInit {
   loader = false;
   productsInCart?: Product[] = [];
   isCartModalOpen = false; // Controls modal visibility
+  filterText: string = '';
 
   constructor(private ecommerce: EcommerceserviceService, private router: Router) {}
   
@@ -59,4 +60,9 @@ export class ProductDetailsComponent implements OnInit {
     console.log('Cart Modal State:', this.isCartModalOpen);
   }
 
+  onSearchTextChanged(searchText: string) {
+    this.filterText = searchText; // Update the searchText variable
+    console.log(searchText);
+    console.log(this.filterText);
+  }
 }
