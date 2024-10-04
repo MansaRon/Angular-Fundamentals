@@ -11,6 +11,7 @@ import { SearchBarComponent } from '../components/search-bar/search-bar.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationBarComponent } from '../components/navigation-bar/navigation-bar.component';
 import { SearchPipePipe } from '../pipes/search-pipe.pipe';
+import { SortComponent } from '../components/sort/sort.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { SearchPipePipe } from '../pipes/search-pipe.pipe';
     ViewCartComponent,
     SearchBarComponent,
     NavigationBarComponent,
-    SearchPipePipe
+    SearchPipePipe,
+    SortComponent
   ],
   imports: [
     CommonModule,

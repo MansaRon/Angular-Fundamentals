@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Products } from '../data/product';
-import { Product } from '../data/productInterface';
+import { Products } from '../model/product';
+import { Product } from '../model/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { map } from 'rxjs';
 import { state } from '@angular/animations';

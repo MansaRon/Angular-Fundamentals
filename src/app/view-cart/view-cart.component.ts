@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
-import { Product } from '../data/productInterface';
+import { Product } from '../model/productInterface';
 
 @Component({
   selector: 'app-view-cart',

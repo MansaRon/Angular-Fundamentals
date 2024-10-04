@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Product } from 'src/app/data/productInterface';
+import { Product } from 'src/app/model/productInterface';
 
 @Component({
   selector: 'app-purchase-modal',

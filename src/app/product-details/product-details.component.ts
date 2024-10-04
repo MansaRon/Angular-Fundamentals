@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../data/productInterface';
+import { Product } from '../model/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { map, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -63,5 +63,14 @@ export class ProductDetailsComponent implements OnInit {
   onSearchTextChanged(searchText: string) {
     this.filterText = searchText; // Update the searchText variable
     console.log(searchText);
+  }
+
+  onSortSelected(sortString: string) {
+    this.ecommerce
+    .getCartSortBy(sortString)
+    .pipe(
+      map(productSort => (this.products = productSort)),
+      tap((_) => (this.loader = true)))
+      .subscribe();
   }
 }

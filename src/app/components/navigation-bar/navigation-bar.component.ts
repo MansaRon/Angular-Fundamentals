@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Product } from 'src/app/data/productInterface';
+import { Product } from 'src/app/model/productInterface';
 
 @Component({
   selector: 'app-navigation-bar',
