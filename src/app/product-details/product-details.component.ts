@@ -26,7 +26,6 @@ export class ProductDetailsComponent implements OnInit {
     if (storedCart) {
       this.productsInCart = JSON.parse(storedCart) as Product[]; // Parse and assign to productsInCart
     }
-    console.log('Product in cart:', this.productsInCart);
   }
 
   getProducts() {
@@ -51,17 +50,14 @@ export class ProductDetailsComponent implements OnInit {
 
   openViewCart() {
     this.isCartModalOpen = true;
-    console.log('click me')
   }
 
   viewCartModel() {
     this.isCartModalOpen = !this.isCartModalOpen;
-    console.log('Cart Modal State:', this.isCartModalOpen);
   }
 
   onSearchTextChanged(searchText: string) {
     this.filterText = searchText; // Update the searchText variable
-    console.log(searchText);
   }
 
   onSortSelected(sortString: string) {

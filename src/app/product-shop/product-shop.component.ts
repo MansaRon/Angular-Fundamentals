@@ -37,7 +37,6 @@ export class ProductShopComponent implements OnInit  {
     if (product) {
       product.quantity = 1;
       this.ecommerce.addToCart(product);
-      console.log(this.ecommerce.getCartItems());
       this.router.navigate(['/product-details']);
     }
   }

@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, DoCheck, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { Product } from '../model/productInterface';
 
@@ -11,15 +10,15 @@ import { Product } from '../model/productInterface';
 export class ViewCartComponent implements OnInit {
 
   products?: Product[];
-  numberOfItems: number = 0;
   cartTotal: number = 0;
   tax: number = 0;
   loader = false;
 
-  constructor(private ecommerce: EcommerceserviceService, private router: Router) {}
+  constructor(private ecommerce: EcommerceserviceService) {}
   
   ngOnInit(): void {
     this.loadCart();
+    this.getCartTotal();
   }
 
   private loadCart() {
@@ -28,25 +27,21 @@ export class ViewCartComponent implements OnInit {
     if (storedCart) {
       this.products = JSON.parse(storedCart) as Product[];
     }
-    console.log('Loaded cart:', this.products);
   }
 
   removeItem(itemNumber: number) {
-    console.log(itemNumber);
     this.ecommerce.removeFromCart(itemNumber);
     this.loadCart();
   }
 
-  // Increase the quantity of a specific item
   increaseQuantity(productId: number) {
-    this.ecommerce.increaseQuantity(productId);  // Call the service to increase the quantity
-    this.loadCart();  // Reload the cart to reflect changes
+    this.ecommerce.increaseQuantity(productId);
+    this.loadCart();
   }
 
-  // Decrease the quantity of a specific item
   decreaseQuantity(productId: number) {
-    this.ecommerce.decreaseQuantity(productId);  // Call the service to decrease the quantity
-    this.loadCart();  // Reload the cart to reflect changes
+    this.ecommerce.decreaseQuantity(productId);
+    this.loadCart();
   }
 
   getCartTotal(): number {

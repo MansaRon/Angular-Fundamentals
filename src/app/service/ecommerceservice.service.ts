@@ -58,7 +58,6 @@ export class EcommerceserviceService {
       const product = this.cart.find(p => p.id === productId);
       if (product) {
         product.quantity++;
-        console.log(product);
         this.saveCart();
       }
     }
@@ -67,7 +66,6 @@ export class EcommerceserviceService {
       const product = this.cart.find(p => p.id === productId);
       if (product && product.quantity > 1) {
         product.quantity--;
-        console.log(product);
         this.saveCart();
       }
     }
