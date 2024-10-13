@@ -26,8 +26,8 @@ export class ViewCartComponent implements OnInit {
     if (storedCart) {
       this.products = JSON.parse(storedCart) as Product[];
       this.getCartTotal();
+      console.log(this.cartTotal);
     }
-    console.log(this.products);
   }
 
   removeItem(itemNumber: number) {
@@ -56,7 +56,7 @@ export class ViewCartComponent implements OnInit {
   clearCart() {
     this.loadCart();
     this.products = [];
-    sessionStorage.removeItem('cart');
+    sessionStorage.clear();
   }
 
 }

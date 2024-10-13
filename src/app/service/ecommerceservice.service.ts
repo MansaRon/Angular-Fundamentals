@@ -28,7 +28,12 @@ export class EcommerceserviceService {
   }
 
   addToCart(product: Product) {
-    this.cart.push(product);
+    const existingProduct = this.cart.find(p => p.id === product.id);
+    if (existingProduct) {
+      existingProduct.quantity += product.quantity;
+    } else {
+      this.cart.push(product);
+    }
     this.saveCart();
   }
 
@@ -54,31 +59,36 @@ export class EcommerceserviceService {
     }
   }
 
-    increaseQuantity(productId: number) {
-      const product = this.cart.find(p => p.id === productId);
-      if (product) {
-        product.quantity++;
-        this.saveCart();
-      }
+  increaseQuantity(productId: number) {
+    const product = this.cart.find(p => p.id === productId);
+    if (product) {
+      product.quantity++;
+      this.saveCart();
     }
+  }
   
-    decreaseQuantity(productId: number) {
-      const product = this.cart.find(p => p.id === productId);
-      if (product && product.quantity > 1) {
-        product.quantity--;
-        this.saveCart();
-      }
+  decreaseQuantity(productId: number) {
+    const product = this.cart.find(p => p.id === productId);
+    if (product && product.quantity > 1) {
+      product.quantity--;
+      this.saveCart();
     }
+  }
 
   getCartTotal(): number {
-    return this.cart.reduce((total, product) => {
-      return total + product.price * product.quantity;
-    }, 0); // Start with 0 as the initial value
-  }  
+    if (this.cart.length === 0) return 0; // Handle empty cart case
+    return this.cart.reduce((total, product) => total + product.price * product.quantity, 0);
+  }    
 
   getTaxAmount(): number {
     return this.getCartTotal() * 0.10;
   }
+
+  getTotalWithTax(): number {
+    const cartTotal = this.getCartTotal();
+    const tax = this.getTaxAmount();
+    return cartTotal + tax;
+  }  
   
   getCartSortBy(sortString: string): Observable<Product[]> {
     return this.getProducts().pipe(
