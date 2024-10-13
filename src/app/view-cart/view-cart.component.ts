@@ -18,7 +18,6 @@ export class ViewCartComponent implements OnInit {
   
   ngOnInit(): void {
     this.loadCart();
-    this.getCartTotal();
   }
 
   private loadCart() {
@@ -26,7 +25,9 @@ export class ViewCartComponent implements OnInit {
     this.loader = true;
     if (storedCart) {
       this.products = JSON.parse(storedCart) as Product[];
+      this.getCartTotal();
     }
+    console.log(this.products);
   }
 
   removeItem(itemNumber: number) {
@@ -50,6 +51,12 @@ export class ViewCartComponent implements OnInit {
 
   getTaxAmount(): number {
     return this.tax = this.ecommerce.getTaxAmount();
+  }
+
+  clearCart() {
+    this.loadCart();
+    this.products = [];
+    sessionStorage.removeItem('cart');
   }
 
 }
