@@ -38,6 +38,12 @@ export class EcommerceserviceService {
   }
 
   getCartItems(): Product[] {
+    const savedCart = sessionStorage.getItem('cart');
+    if (savedCart) { 
+      this.cart = JSON.parse(savedCart) as Product[];
+    } else {
+      this.cart = [];
+    }
     return this.cart;
   }
 
@@ -77,7 +83,7 @@ export class EcommerceserviceService {
 
   getCartTotal(): number {
     if (this.cart.length === 0) return 0; // Handle empty cart case
-    return this.cart.reduce((total, product) => total + product.price * product.quantity, 0);
+    return this.getCartItems().reduce((total, product) => total + product.price * product.quantity, 0);
   }    
 
   getTaxAmount(): number {

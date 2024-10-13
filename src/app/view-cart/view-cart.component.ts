@@ -10,8 +10,6 @@ import { Product } from '../model/productInterface';
 export class ViewCartComponent implements OnInit {
 
   products?: Product[];
-  cartTotal: number = 0;
-  tax: number = 0;
   loader = false;
 
   constructor(private ecommerce: EcommerceserviceService) {}
@@ -20,14 +18,10 @@ export class ViewCartComponent implements OnInit {
     this.loadCart();
   }
 
-  private loadCart() {
-    const storedCart = sessionStorage.getItem('cart');
+  public loadCart() {
     this.loader = true;
-    if (storedCart) {
-      this.products = JSON.parse(storedCart) as Product[];
-      this.getCartTotal();
-      console.log(this.cartTotal);
-    }
+    this.products = this.ecommerce.getCartItems();
+    this.getCartTotal();
   }
 
   removeItem(itemNumber: number) {
@@ -46,11 +40,15 @@ export class ViewCartComponent implements OnInit {
   }
 
   getCartTotal(): number {
-    return this.cartTotal = this.ecommerce.getCartTotal();
+    return this.ecommerce.getCartTotal();
   }
 
   getTaxAmount(): number {
-    return this.tax = this.ecommerce.getTaxAmount();
+    return this.ecommerce.getTaxAmount();
+  }
+
+  getTotalWithTax(): number {
+    return this.ecommerce.getTotalWithTax();
   }
 
   clearCart() {
