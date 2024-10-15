@@ -24,6 +24,11 @@ const routes: Routes = [
     .then(m => m.ViewCartModule) 
   },
   { 
+    path: 'checkout', 
+    loadChildren: () => import('./checkout-page/checkout-page.module')
+    .then(m => m.CheckoutPageModule) 
+  },
+  { 
     path: '**', 
     loadChildren: () => import('./page-not-found/page-not-found.module')
     .then(m => m.PageNotFoundModule) 

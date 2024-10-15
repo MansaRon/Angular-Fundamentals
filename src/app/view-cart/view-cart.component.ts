@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { Product } from '../model/productInterface';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-cart',
@@ -12,7 +13,7 @@ export class ViewCartComponent implements OnInit {
   products?: Product[];
   loader = false;
 
-  constructor(private ecommerce: EcommerceserviceService) {}
+  constructor(private ecommerce: EcommerceserviceService, private router: Router) {}
   
   ngOnInit(): void {
     this.loadCart();
@@ -54,6 +55,10 @@ export class ViewCartComponent implements OnInit {
   clearCart() {
     this.products = [];
     sessionStorage.clear();
+  }
+
+  navigateToCheckout() {
+    this.router.navigateByUrl('/checkout');
   }
 
 }
