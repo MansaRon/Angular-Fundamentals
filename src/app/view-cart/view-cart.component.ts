@@ -52,7 +52,6 @@ export class ViewCartComponent implements OnInit {
   }
 
   clearCart() {
-    this.loadCart();
     this.products = [];
     sessionStorage.clear();
   }
