@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { CheckoutPageRoutingModule } from './checkout-page-routing.module';
 import { CheckoutPageComponent } from './checkout-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { EcommerceserviceService } from '../service/ecommerceservice.service';
 
 
 @NgModule({
@@ -11,7 +14,12 @@ import { CheckoutPageComponent } from './checkout-page.component';
   ],
   imports: [
     CommonModule,
-    CheckoutPageRoutingModule
+    CheckoutPageRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule
+  ],
+  providers: [
+    EcommerceserviceService
   ]
 })
 export class CheckoutPageModule { }
