@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Country } from '../model/country';
+import { CountryFlag, COUNTRY_FLAGS } from '../model/flags-config';
 
 @Component({
   selector: 'app-checkout-page',
@@ -11,11 +12,11 @@ import { Country } from '../model/country';
 })
 export class CheckoutPageComponent implements OnInit {
   countries: Country[] = [
-    { name: 'United States', abbrev: 'USA', cities: ['New York', 'Los Angeles', 'Chicago', 'Houston'] },
-    { name: 'Australia', abbrev: 'AS', cities: ['Sydney', 'Melbourne', 'Brisbane'] },
-    { name: 'France', abbrev: 'FR', cities: ['Paris', 'Lyon', 'Marseille'] },
-    { name: 'Spain', abbrev: 'ES', cities: ['Madrid', 'Barcelona', 'Valencia'] },
-    { name: 'United Kingdom', abbrev: 'UK', cities: ['London', 'Manchester', 'Liverpool'] }
+    { name: 'United States', code: '+1', abbrev: 'USA', cities: ['New York', 'Los Angeles', 'Chicago', 'Houston'] },
+    { name: 'Australia', code: '+61', abbrev: 'AS', cities: ['Sydney', 'Melbourne', 'Brisbane'] },
+    { name: 'France', code: '+33', abbrev: 'FR', cities: ['Paris', 'Lyon', 'Marseille'] },
+    { name: 'Spain', code: '+34', abbrev: 'ES', cities: ['Madrid', 'Barcelona', 'Valencia'] },
+    { name: 'United Kingdom', code: '+44', abbrev: 'UK', cities: ['London', 'Manchester', 'Liverpool'] }
   ];
   cities: string[] = [];
   checkoutForm = new FormGroup({    
@@ -33,6 +34,8 @@ export class CheckoutPageComponent implements OnInit {
       Validators.required
     ])
   });
+  selectedCountryCode = this.countries[0].code;
+  countryFlag: CountryFlag[] = COUNTRY_FLAGS;
 
   constructor(private activatedRoute: ActivatedRoute,
     private ecommerce: EcommerceserviceService,
@@ -45,6 +48,10 @@ export class CheckoutPageComponent implements OnInit {
         this.checkoutForm.get('city')?.setValue('');
       }
     });
+  }
+
+  changeCountryCode(code: string) {
+    this.selectedCountryCode = code;
   }
 
 }
