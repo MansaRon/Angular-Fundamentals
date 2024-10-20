@@ -96,26 +96,29 @@
                     id="dropdown-phone-button"
                     (click)="isDropdownOpen = !isDropdownOpen"
                     class="z-10 inline-flex shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
-                    type="button">
+                    type="button"
+                    data-dropdown-toggle="dropdown-phone">
                     <span [innerHTML]="getSafeSvg(selectedCountryFlag)" class="h-4 w-4 me-2"></span>
                     {{ selectedCountryCode }}
                     <svg class="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
                     </svg>
-                </button>
+                  </button>
+                  <!-- Country code and flag -->
 
-                <div id="dropdown-phone" *ngIf="isDropdownOpen" class="z-10 hidden w-56 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700">
-                  <ul class="p-2 text-sm font-medium text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-phone-button">
+                <div 
+                  id="dropdown-phone" 
+                  class="z-10 hidden w-56 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700">
+                  <ul 
+                    class="p-2 text-sm font-medium text-gray-700 dark:text-gray-200" 
+                    aria-labelledby="dropdown-phone-button">
                     <li *ngFor="let countryFlags of countryFlag">
                       <button
                         type="button"
                         (click)="changeCountryCode(countryFlags.code)"
-                        class="inline-flex w-full rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem">
-                        <span class="inline-flex items-center">
+                        class="inline-flex w-full rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
                           <span [innerHTML]="getSafeSvg(countryFlags.svg)" class="me-2 h-4 w-4"></span>
                             {{ countryFlags.name }} ({{ countryFlags.code }})
-                        </span>
                       </button>
                     </li>
                   </ul>
@@ -142,14 +145,14 @@
                     formControlName="emailAddress"/>
               </div>
     
-              <div class="sm:col-span-2">
+              <!-- <div class="sm:col-span-2">
                 <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
                   <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
                   </svg>
                   Add new address
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
         <!-- Delivery Details -->

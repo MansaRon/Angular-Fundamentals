@@ -51,13 +51,13 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   changeCountryCode(code: string) {
+    console.log(code);
     const selectedCountryCode = this.countryFlag.find(country => country.code === code) || this.countryFlag[0];
     if (selectedCountryCode) {
       this.selectedCountryCode = selectedCountryCode.code;
     } else {
       this.selectedCountryCode = this.countryFlag[0].code;
     }
-    console.log('here');
     
   }
 
