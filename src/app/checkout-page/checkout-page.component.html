@@ -91,30 +91,30 @@
                     Phone Number* 
                 </label>
                 <div class="flex items-center">
+                  <!-- Country code and flag -->
                   <button
                     id="dropdown-phone-button"
-                    data-dropdown-toggle="dropdown-phone"
+                    (click)="isDropdownOpen = !isDropdownOpen"
                     class="z-10 inline-flex shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
                     type="button">
-                  <svg fill="none" aria-hidden="true" class="me-2 h-4 w-4" viewBox="0 0 20 15">
-                    <!-- Add a flag icon here -->
-                  </svg>
+                    <span [innerHTML]="getSafeSvg(selectedCountryFlag)" class="h-4 w-4 me-2"></span>
                     {{ selectedCountryCode }}
-                  <svg class="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
-                  </svg>
+                    <svg class="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
+                    </svg>
                 </button>
-                <div id="dropdown-phone" class="z-10 hidden w-56 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700">
+
+                <div id="dropdown-phone" *ngIf="isDropdownOpen" class="z-10 hidden w-56 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700">
                   <ul class="p-2 text-sm font-medium text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-phone-button">
-                    <li *ngFor="let country of countries">
+                    <li *ngFor="let countryFlags of countryFlag">
                       <button
                         type="button"
-                        (click)="changeCountryCode(country.code)"
+                        (click)="changeCountryCode(countryFlags.code)"
                         class="inline-flex w-full rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                         role="menuitem">
                         <span class="inline-flex items-center">
-                          <span [innerHTML]="country.svg" class="me-2 h-4 w-4"></span>
-                            {{ country.name }} ({{ country.code }})
+                          <span [innerHTML]="getSafeSvg(countryFlags.svg)" class="me-2 h-4 w-4"></span>
+                            {{ countryFlags.name }} ({{ countryFlags.code }})
                         </span>
                       </button>
                     </li>
@@ -125,8 +125,6 @@
                         type="text" 
                         id="phone-input" 
                         class="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:border-s-gray-700  dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500" 
-                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" 
-                        placeholder="123-456-7890" 
                         required 
                         formControlName="phoneNumber"/>
                   </div>

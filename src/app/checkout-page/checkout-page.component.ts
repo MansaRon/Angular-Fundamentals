@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Country } from '../model/country';
-import { CountryFlag, COUNTRY_FLAGS } from '../model/flags-config';
+import { Country, COUNTRY_FLAGS } from '../model/country';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-checkout-page',
@@ -11,13 +11,7 @@ import { CountryFlag, COUNTRY_FLAGS } from '../model/flags-config';
   styleUrls: ['./checkout-page.component.css']
 })
 export class CheckoutPageComponent implements OnInit {
-  countries: Country[] = [
-    { name: 'United States', code: '+1', abbrev: 'USA', cities: ['New York', 'Los Angeles', 'Chicago', 'Houston'] },
-    { name: 'Australia', code: '+61', abbrev: 'AS', cities: ['Sydney', 'Melbourne', 'Brisbane'] },
-    { name: 'France', code: '+33', abbrev: 'FR', cities: ['Paris', 'Lyon', 'Marseille'] },
-    { name: 'Spain', code: '+34', abbrev: 'ES', cities: ['Madrid', 'Barcelona', 'Valencia'] },
-    { name: 'United Kingdom', code: '+44', abbrev: 'UK', cities: ['London', 'Manchester', 'Liverpool'] }
-  ];
+  countries: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
   checkoutForm = new FormGroup({    
     firstName: new FormControl('', Validators.required),    
@@ -34,24 +28,41 @@ export class CheckoutPageComponent implements OnInit {
       Validators.required
     ])
   });
-  selectedCountryCode = this.countries[0].code;
-  countryFlag: CountryFlag[] = COUNTRY_FLAGS;
+  countryFlag: Country[] = COUNTRY_FLAGS;
+  selectedCountryCode = this.countryFlag[0].code;
+  isDropdownOpen = false;
+  selectedCountryFlag = this.countryFlag[0].svg;
 
   constructor(private activatedRoute: ActivatedRoute,
     private ecommerce: EcommerceserviceService,
-    private router: Router) {}
+    private router: Router,
+    private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
     this.checkoutForm.get('country')?.valueChanges.subscribe((selectedCountry) => {
       if (selectedCountry) {
         this.cities = selectedCountry?.cities;
         this.checkoutForm.get('city')?.setValue('');
+        this.selectedCountryCode = selectedCountry?.code;
+        this.checkoutForm.get('phoneNumber')?.setValue('');
+        this.selectedCountryFlag = selectedCountry?.svg;
       }
     });
   }
 
   changeCountryCode(code: string) {
-    this.selectedCountryCode = code;
+    const selectedCountryCode = this.countryFlag.find(country => country.code === code) || this.countryFlag[0];
+    if (selectedCountryCode) {
+      this.selectedCountryCode = selectedCountryCode.code;
+    } else {
+      this.selectedCountryCode = this.countryFlag[0].code;
+    }
+    console.log('here');
+    
+  }
+
+  getSafeSvg(svg: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(svg);
   }
 
 }
