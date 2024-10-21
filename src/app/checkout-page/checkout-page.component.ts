@@ -84,4 +84,16 @@ export class CheckoutPageComponent implements OnInit {
 
   applyPromo() {}
 
+  getCartTotal(): number {
+    return this.ecommerce.getCartTotal();
+  }
+
+  getTaxAmount(): number {
+    return this.ecommerce.getTaxAmount();
+  }
+
+  getTotalWithTax(): number {
+    return this.ecommerce.getTotalWithTax();
+  }
+
 }
