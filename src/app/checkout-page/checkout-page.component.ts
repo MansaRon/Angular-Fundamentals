@@ -4,8 +4,8 @@ import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Country, COUNTRY_FLAGS } from '../model/country';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { PaymentMethod } from '../model/paymentOptions';
-import { DeliveryMethod } from '../model/deliveryOptions';
+import { PAYMENT_OPTIONS, PaymentMethod } from '../model/paymentOptions';
+import { DELIVERY_OPTIONS, DeliveryMethod } from '../model/deliveryOptions';
 
 @Component({
   selector: 'app-checkout-page',
@@ -13,53 +13,9 @@ import { DeliveryMethod } from '../model/deliveryOptions';
   styleUrls: ['./checkout-page.component.css']
 })
 export class CheckoutPageComponent implements OnInit {
-  payments: PaymentMethod[] = [
-      {
-        id: 'credit-card',
-        label: 'Credit Card',
-        description: 'Pay with your credit card',
-        checked: true,
-        processingFee: null
-      },
-      {
-        id: 'pay-on-delivery',
-        label: 'Payment on delivery',
-        description: '+$15 payment processing fee',
-        checked: false,
-        processingFee: 15
-      },
-      {
-        id: 'paypal',
-        label: 'Paypal account',
-        description: 'Connect to your account',
-        checked: false,
-        processingFee: null
-      }
-    ];
+  payments: PaymentMethod[] = PAYMENT_OPTIONS;
 
-  delivery: DeliveryMethod[] = [
-    {
-      id: 'DHL',
-      label: 'DHL Fast Delivery',
-      checked: true,
-      deliveryDate: new Date(),
-      price: 15.00
-    },
-    {
-      id: 'FEDEX',
-      label: 'Free Delivery - FedEx',
-      checked: true,
-      deliveryDate: new Date('2024-12-25'),
-      price: 27.00
-    },
-    {
-      id: 'EXPRESS',
-      label: 'Express Delivery',
-      checked: true,
-      deliveryDate: new Date('2024-10-29'),
-      price: 49.00
-    },
-  ];  
+  delivery: DeliveryMethod[] = DELIVERY_OPTIONS;  
     
   countries: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
