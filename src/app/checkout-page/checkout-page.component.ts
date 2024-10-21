@@ -4,6 +4,7 @@ import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Country, COUNTRY_FLAGS } from '../model/country';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { PaymentMethod } from '../model/paymentOptions';
 
 @Component({
   selector: 'app-checkout-page',
@@ -11,8 +12,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./checkout-page.component.css']
 })
 export class CheckoutPageComponent implements OnInit {
-  payments: Payments = {
-    paymentMethods: [
+  payments: PaymentMethod[] = [
       {
         id: 'credit-card',
         label: 'Credit Card',
@@ -34,8 +34,8 @@ export class CheckoutPageComponent implements OnInit {
         checked: false,
         processingFee: null
       }
-    ]
-  };
+    ];
+    
   countries: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
   checkoutForm = new FormGroup({    
@@ -43,7 +43,7 @@ export class CheckoutPageComponent implements OnInit {
     lastName: new FormControl('', Validators.required),
     country: new FormControl<Country | null>(null, Validators.required),
     city: new FormControl('', Validators.required),
-    paymentOption: new FormControl(this.payments.paymentMethods.find(check => check.checked)?.id || null, Validators.required),
+    paymentOption: new FormControl(this.payments.find(check => check.checked)?.id || null, Validators.required),
     phoneNumber: new FormControl('', [
       Validators.required, 
       Validators.maxLength(10), 
@@ -92,6 +92,7 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   onPaymentMethodChange(id: string) {
+    console.log(id);
     this.checkoutForm.patchValue({ paymentOption: id });
   }
 
