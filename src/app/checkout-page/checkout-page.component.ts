@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Country, COUNTRY_FLAGS } from '../model/country';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { PaymentMethod } from '../model/paymentOptions';
+import { DeliveryMethod } from '../model/deliveryOptions';
 
 @Component({
   selector: 'app-checkout-page',
@@ -35,6 +36,30 @@ export class CheckoutPageComponent implements OnInit {
         processingFee: null
       }
     ];
+
+  delivery: DeliveryMethod[] = [
+    {
+      id: 'DHL',
+      label: 'DHL Fast Delivery',
+      checked: true,
+      deliveryDate: new Date(),
+      price: 15.00
+    },
+    {
+      id: 'FEDEX',
+      label: 'Free Delivery - FedEx',
+      checked: true,
+      deliveryDate: new Date('2024-12-25'),
+      price: 27.00
+    },
+    {
+      id: 'EXPRESS',
+      label: 'Express Delivery',
+      checked: true,
+      deliveryDate: new Date('2024-10-29'),
+      price: 49.00
+    },
+  ];  
     
   countries: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
@@ -44,6 +69,7 @@ export class CheckoutPageComponent implements OnInit {
     country: new FormControl<Country | null>(null, Validators.required),
     city: new FormControl('', Validators.required),
     paymentOption: new FormControl(this.payments.find(check => check.checked)?.id || null, Validators.required),
+    deliveryOption: new FormControl(this.delivery.find(delivery => delivery.id)?.id || null, Validators.required),
     phoneNumber: new FormControl('', [
       Validators.required, 
       Validators.maxLength(10), 
@@ -53,6 +79,7 @@ export class CheckoutPageComponent implements OnInit {
       Validators.email, 
       Validators.required
     ]),
+    promotionalCode: new FormControl('')
   });
   countryFlag: Country[] = COUNTRY_FLAGS;
   selectedCountryCode = this.countryFlag[0].code;
@@ -92,8 +119,13 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   onPaymentMethodChange(id: string) {
-    console.log(id);
     this.checkoutForm.patchValue({ paymentOption: id });
   }
+
+  onDeliveryChange(id: string) {
+    this.checkoutForm.patchValue({ deliveryOption: id });
+  }
+
+  applyPromo() {}
 
 }
