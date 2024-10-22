@@ -21,6 +21,7 @@ export class CheckoutPageComponent implements OnInit {
   
   countryFlag: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
+  selectedPrice: number = 0;
   checkoutForm = new FormGroup({    
     firstName: new FormControl('', Validators.required),    
     lastName: new FormControl('', Validators.required),
@@ -28,7 +29,7 @@ export class CheckoutPageComponent implements OnInit {
     city: new FormControl('', Validators.required),
     paymentOption: new FormControl(this.payments.find(check => check.checked)?.id || null, Validators.required),
     deliveryOption: new FormControl(this.delivery.find(delivery => delivery.id)?.id || null, Validators.required),
-    promotionalCode: new FormControl('', Validators.maxLength(6)),
+    deliveryAmount: new FormControl(this.selectedPrice),
     phoneNumber: new FormControl('', [
       Validators.required, 
       Validators.maxLength(10), 
@@ -38,6 +39,10 @@ export class CheckoutPageComponent implements OnInit {
       Validators.email, 
       Validators.required
     ]),
+    subTotal: new FormControl(0),
+    promotionalCode: new FormControl('', Validators.maxLength(6)),
+    tax: new FormControl(),
+    total: new FormControl()
   });
   selectedCountryCode = this.countryFlag[0].code;
   isDropdownOpen = false;
@@ -56,6 +61,16 @@ export class CheckoutPageComponent implements OnInit {
         this.selectedCountryCode = selectedCountry?.code;
         this.checkoutForm.get('phoneNumber')?.setValue('');
         this.selectedCountryFlag = selectedCountry?.svg;
+      }
+    });
+
+    //value change of delivery options
+    this.checkoutForm.get('deliveryOption')?.valueChanges.subscribe(selectedId => {
+      const selectedDelivery = this.delivery.find(option => option.id === selectedId);
+      console.log(selectedDelivery);
+      if (selectedDelivery) {
+        this.selectedPrice = selectedDelivery.price;
+        this.checkoutForm.patchValue({deliveryAmount: selectedDelivery.price});
       }
     });
   }
@@ -93,9 +108,9 @@ export class CheckoutPageComponent implements OnInit {
 
   getCartTotal(): number {
     if (this.applyPromo()) {
-      return this.ecommerce.getCartTotal() - this.applyPromo();
+      return (this.ecommerce.getCartTotal() + this.getDeliveryMethodAmount()) - this.applyPromo();
     }
-    return this.ecommerce.getCartTotal();
+    return this.ecommerce.getCartTotal() + this.getDeliveryMethodAmount();
   }
 
   getTaxAmount(): number {
@@ -107,6 +122,10 @@ export class CheckoutPageComponent implements OnInit {
 
   getTotalWithTax(): number {
     return this.getCartTotal() + this.getTaxAmount();
+  }
+
+  getDeliveryMethodAmount(): number {
+    return this.selectedPrice = this.delivery.find(option => option.checked)?.price ?? 0;
   }
 
 }
