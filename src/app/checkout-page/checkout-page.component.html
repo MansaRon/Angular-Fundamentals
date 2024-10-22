@@ -231,7 +231,8 @@
                 type="text" 
                 id="voucher" 
                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                formControlName="promotionalCode"/>
+                formControlName="promotionalCode"
+                maxlength="6"/>
               <button 
                 (click)="applyPromo()"
                 type="button" 
@@ -253,7 +254,7 @@
   
               <dl class="flex items-center justify-between gap-4 py-3">
                 <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Savings</dt>
-                <dd class="text-base font-medium text-green-500">0</dd>
+                <dd class="text-base font-medium text-green-500">{{applyPromo() | currency}}</dd>
               </dl>
   
               <dl class="flex items-center justify-between gap-4 py-3">

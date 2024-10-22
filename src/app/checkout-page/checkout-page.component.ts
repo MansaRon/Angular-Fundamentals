@@ -18,6 +18,8 @@ export class CheckoutPageComponent implements OnInit {
   delivery: DeliveryMethod[] = DELIVERY_OPTIONS;  
     
   countries: Country[] = COUNTRY_FLAGS;
+  
+  countryFlag: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
   checkoutForm = new FormGroup({    
     firstName: new FormControl('', Validators.required),    
@@ -26,6 +28,7 @@ export class CheckoutPageComponent implements OnInit {
     city: new FormControl('', Validators.required),
     paymentOption: new FormControl(this.payments.find(check => check.checked)?.id || null, Validators.required),
     deliveryOption: new FormControl(this.delivery.find(delivery => delivery.id)?.id || null, Validators.required),
+    promotionalCode: new FormControl('', Validators.maxLength(6)),
     phoneNumber: new FormControl('', [
       Validators.required, 
       Validators.maxLength(10), 
@@ -35,9 +38,7 @@ export class CheckoutPageComponent implements OnInit {
       Validators.email, 
       Validators.required
     ]),
-    promotionalCode: new FormControl('')
   });
-  countryFlag: Country[] = COUNTRY_FLAGS;
   selectedCountryCode = this.countryFlag[0].code;
   isDropdownOpen = false;
   selectedCountryFlag = this.countryFlag[0].svg;
@@ -82,18 +83,30 @@ export class CheckoutPageComponent implements OnInit {
     this.checkoutForm.patchValue({ deliveryOption: id });
   }
 
-  applyPromo() {}
+  applyPromo() {
+    if (this.checkoutForm.value.promotionalCode) {
+      return 50;
+    } else {
+      return 0;
+    }
+  }
 
   getCartTotal(): number {
+    if (this.applyPromo()) {
+      return this.ecommerce.getCartTotal() - this.applyPromo();
+    }
     return this.ecommerce.getCartTotal();
   }
 
   getTaxAmount(): number {
-    return this.ecommerce.getTaxAmount();
+    if (this.applyPromo()) {
+      return this.getCartTotal() * 0.10;
+    }
+    return this.ecommerce.getTaxAmount()
   }
 
   getTotalWithTax(): number {
-    return this.ecommerce.getTotalWithTax();
+    return this.getCartTotal() + this.getTaxAmount();
   }
 
 }
