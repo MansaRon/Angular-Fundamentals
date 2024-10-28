@@ -21,7 +21,7 @@ export class CheckoutPageComponent implements OnInit {
   
   countryFlag: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
-  selectedPrice: number = 0;
+  selectedPaymentPrice: number = 15;
   checkoutForm = new FormGroup({    
     firstName: new FormControl('', Validators.required),    
     lastName: new FormControl('', Validators.required),
@@ -29,7 +29,7 @@ export class CheckoutPageComponent implements OnInit {
     city: new FormControl('', Validators.required),
     paymentOption: new FormControl(this.payments.find(check => check.checked)?.id || null, Validators.required),
     deliveryOption: new FormControl(this.delivery.find(delivery => delivery.id)?.id || null, Validators.required),
-    deliveryAmount: new FormControl(this.selectedPrice),
+    deliveryAmount: new FormControl(this.selectedPaymentPrice),
     phoneNumber: new FormControl('', [
       Validators.required, 
       Validators.maxLength(10), 
@@ -40,7 +40,7 @@ export class CheckoutPageComponent implements OnInit {
       Validators.required
     ]),
     subTotal: new FormControl(0),
-    promotionalCode: new FormControl('', Validators.maxLength(6)),
+    promotionalCode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6)]),
     tax: new FormControl(),
     total: new FormControl()
   });
@@ -69,7 +69,7 @@ export class CheckoutPageComponent implements OnInit {
       const selectedDelivery = this.delivery.find(option => option.id === selectedId);
       console.log(selectedDelivery);
       if (selectedDelivery) {
-        this.selectedPrice = selectedDelivery.price;
+        this.selectedPaymentPrice = selectedDelivery.price;
         this.checkoutForm.patchValue({deliveryAmount: selectedDelivery.price});
       }
     });
@@ -99,33 +99,23 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   applyPromo() {
-    if (this.checkoutForm.value.promotionalCode) {
-      return 50;
-    } else {
-      return 0;
-    }
+    return this.checkoutForm.value.promotionalCode ? 50 : 0;
   }
 
-  getCartTotal(): number {
-    if (this.applyPromo()) {
-      return (this.ecommerce.getCartTotal() + this.getDeliveryMethodAmount()) - this.applyPromo();
-    }
-    return this.ecommerce.getCartTotal() + this.getDeliveryMethodAmount();
+  getCartSubTotal(): number {
+    return this.ecommerce.getCartTotal() - this.applyPromo();
   }
 
   getTaxAmount(): number {
-    if (this.applyPromo()) {
-      return this.getCartTotal() * 0.10;
-    }
-    return this.ecommerce.getTaxAmount()
+    return this.getCartSubTotal() * 0.10;
+  }
+
+  getCartTotal(): number {
+    return this.getCartSubTotal() + this.selectedPaymentPrice;
   }
 
   getTotalWithTax(): number {
     return this.getCartTotal() + this.getTaxAmount();
-  }
-
-  getDeliveryMethodAmount(): number {
-    return this.selectedPrice = this.delivery.find(option => option.checked)?.price ?? 0;
   }
 
 }
