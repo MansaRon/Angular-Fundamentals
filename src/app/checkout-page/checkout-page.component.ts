@@ -22,6 +22,7 @@ export class CheckoutPageComponent implements OnInit {
   countryFlag: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
   selectedPaymentPrice: number = 15;
+  
   checkoutForm = new FormGroup({    
     firstName: new FormControl('', Validators.required),    
     lastName: new FormControl('', Validators.required),
@@ -41,9 +42,10 @@ export class CheckoutPageComponent implements OnInit {
     ]),
     subTotal: new FormControl(0),
     promotionalCode: new FormControl('', Validators.maxLength(6)),
-    tax: new FormControl(),
-    total: new FormControl()
+    tax: new FormControl(0),
+    total: new FormControl(0)
   });
+  
   selectedCountryCode = this.countryFlag[0].code;
   isDropdownOpen = false;
   selectedCountryFlag = this.countryFlag[0].svg;
@@ -103,11 +105,15 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   getCartSubTotal(): number {
-    return this.ecommerce.getCartTotal() - this.applyPromo();
+    const subTotal = this.ecommerce.getCartTotal() - this.applyPromo();
+    this.checkoutForm.patchValue({ subTotal: subTotal });
+    return subTotal;
   }
 
   getTaxAmount(): number {
-    return this.getCartSubTotal() * 0.10;
+    const tax = this.getCartSubTotal() * 0.10; 
+    this.checkoutForm.patchValue({ tax: tax });
+    return tax;
   }
 
   getCartTotal(): number {
@@ -115,7 +121,13 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   getTotalWithTax(): number {
-    return this.getCartTotal() + this.getTaxAmount();
+    const totalWithTax = this.getCartTotal() + this.getTaxAmount();
+    this.checkoutForm.patchValue({ total: totalWithTax });
+    return totalWithTax;
+  }
+
+  onSubmit() {
+    console.log(this.checkoutForm.value);
   }
 
 }

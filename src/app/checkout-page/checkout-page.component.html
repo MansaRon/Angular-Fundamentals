@@ -1,5 +1,5 @@
 <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
-    <form [formGroup]="checkoutForm" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <!-- <ol class="items-center flex w-full max-w-2xl text-center text-sm font-medium text-gray-500 dark:text-gray-400 sm:text-base">
         <li class="after:border-1 flex items-center text-primary-700 after:mx-6 after:hidden after:h-1 after:w-full after:border-b after:border-gray-200 dark:text-primary-500 dark:after:border-gray-700 sm:after:inline-block sm:after:content-[''] md:w-full xl:after:mx-10">
           <span class="flex items-center after:mx-2 after:text-gray-200 after:content-['/'] dark:after:text-gray-500 sm:after:hidden">
@@ -35,7 +35,7 @@
   
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
-                <label for="your_name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Your name </label>
+                <label for="your_name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> First name </label>
                 <input 
                     type="text" 
                     id="your_name" 
@@ -46,14 +46,14 @@
               </div>
   
               <div>
-                <label for="your_email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Your email* </label>
+                <label for="your_surname" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Last name </label>
                 <input 
                     type="email" 
-                    id="your_email" 
+                    id="your_surname" 
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" 
-                    placeholder="Email Address" 
+                    placeholder="Last Name" 
                     required 
-                    formControlName="emailAddress"/>
+                    formControlName="lastName"/>
               </div>
   
               <div>
@@ -279,7 +279,9 @@
           </div>
   
           <div class="space-y-3">
-            <button type="submit" class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Place Order</button>
+            <button type="submit" class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+              Place Order
+            </button>
             <p class="text-sm font-normal text-gray-500 dark:text-gray-400">One or more items in your cart require an account. 
               <a href="#" title="" class="font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">Sign in or create an account now.</a>.
             </p>
