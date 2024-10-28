@@ -40,7 +40,7 @@ export class CheckoutPageComponent implements OnInit {
       Validators.required
     ]),
     subTotal: new FormControl(0),
-    promotionalCode: new FormControl('', [Validators.minLength(6), Validators.maxLength(6)]),
+    promotionalCode: new FormControl('', Validators.maxLength(6)),
     tax: new FormControl(),
     total: new FormControl()
   });
@@ -67,7 +67,6 @@ export class CheckoutPageComponent implements OnInit {
     //value change of delivery options
     this.checkoutForm.get('deliveryOption')?.valueChanges.subscribe(selectedId => {
       const selectedDelivery = this.delivery.find(option => option.id === selectedId);
-      console.log(selectedDelivery);
       if (selectedDelivery) {
         this.selectedPaymentPrice = selectedDelivery.price;
         this.checkoutForm.patchValue({deliveryAmount: selectedDelivery.price});
@@ -99,7 +98,8 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   applyPromo() {
-    return this.checkoutForm.value.promotionalCode ? 50 : 0;
+    const promoControl = this.checkoutForm.get('promotionalCode');
+    return promoControl?.valid && promoControl.value?.length === 6 ? 50 : 0;
   }
 
   getCartSubTotal(): number {
