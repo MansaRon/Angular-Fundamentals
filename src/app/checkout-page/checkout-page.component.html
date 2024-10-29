@@ -64,8 +64,10 @@
                     id="select-country-input-3" 
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                     formControlName="country">
-                    <option *ngFor="let selectedCountry of countries" [ngValue]="selectedCountry">
-                        {{ selectedCountry.name }}
+                    <option 
+                      *ngFor="let selectedCountry of countries" 
+                      [ngValue]="selectedCountry">
+                      {{ selectedCountry.name }}
                     </option>
                 </select>
               </div>
@@ -79,7 +81,7 @@
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                     formControlName="city">
                     <option *ngFor="let city of cities" [value]="city">
-                        {{ city }}
+                      {{ city }}
                     </option>
                 </select>
               </div>
@@ -157,7 +159,7 @@
           </div>
         <!-- Delivery Details -->
 
-        <!-- Payment Section -->
+          <!-- Payment Section -->
           <div class="space-y-4">
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Payment</h3>
   
@@ -189,9 +191,9 @@
               </div>
 
           </div>
-        <!-- Payment Section -->
+          <!-- Payment Section -->
 
-        <!-- Delivery Methods -->
+          <!-- Delivery Methods -->
           <div class="space-y-4">
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Delivery Methods</h3>
   

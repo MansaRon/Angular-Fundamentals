@@ -6,6 +6,7 @@ import { Country, COUNTRY_FLAGS } from '../model/country';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { PAYMENT_OPTIONS, PaymentMethod } from '../model/paymentOptions';
 import { DELIVERY_OPTIONS, DeliveryMethod } from '../model/deliveryOptions';
+import { format } from '../model/numberFormat';
 
 @Component({
   selector: 'app-checkout-page',
@@ -13,12 +14,10 @@ import { DELIVERY_OPTIONS, DeliveryMethod } from '../model/deliveryOptions';
   styleUrls: ['./checkout-page.component.css']
 })
 export class CheckoutPageComponent implements OnInit {
-  payments: PaymentMethod[] = PAYMENT_OPTIONS;
-
-  delivery: DeliveryMethod[] = DELIVERY_OPTIONS;  
-    
-  countries: Country[] = COUNTRY_FLAGS;
   
+  payments: PaymentMethod[] = PAYMENT_OPTIONS;
+  delivery: DeliveryMethod[] = DELIVERY_OPTIONS;    
+  countries: Country[] = COUNTRY_FLAGS;
   countryFlag: Country[] = COUNTRY_FLAGS;
   cities: string[] = [];
   selectedPaymentPrice: number = 15;
@@ -71,7 +70,7 @@ export class CheckoutPageComponent implements OnInit {
       const selectedDelivery = this.delivery.find(option => option.id === selectedId);
       if (selectedDelivery) {
         this.selectedPaymentPrice = selectedDelivery.price;
-        this.checkoutForm.patchValue({deliveryAmount: selectedDelivery.price});
+        this.checkoutForm.patchValue({deliveryAmount: format(selectedDelivery.price)});
       }
     });
   }
@@ -106,13 +105,13 @@ export class CheckoutPageComponent implements OnInit {
 
   getCartSubTotal(): number {
     const subTotal = this.ecommerce.getCartTotal() - this.applyPromo();
-    this.checkoutForm.patchValue({ subTotal: subTotal });
+    this.checkoutForm.patchValue({ subTotal: format(subTotal) });
     return subTotal;
   }
 
   getTaxAmount(): number {
     const tax = this.getCartSubTotal() * 0.10; 
-    this.checkoutForm.patchValue({ tax: tax });
+    this.checkoutForm.patchValue({ tax: format(tax) });
     return tax;
   }
 
@@ -122,12 +121,11 @@ export class CheckoutPageComponent implements OnInit {
 
   getTotalWithTax(): number {
     const totalWithTax = this.getCartTotal() + this.getTaxAmount();
-    this.checkoutForm.patchValue({ total: totalWithTax });
+    this.checkoutForm.patchValue({ total: format(totalWithTax) });
     return totalWithTax;
   }
 
   onSubmit() {
     console.log(this.checkoutForm.value);
   }
-
 }
