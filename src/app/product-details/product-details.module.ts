@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationBarComponent } from '../components/navigation-bar/navigation-bar.component';
 import { SearchPipePipe } from '../pipes/search-pipe.pipe';
 import { SortComponent } from '../components/sort/sort.component';
+import { LoaderComponent } from '../components/loader/loader.component';
+import { SharedModule } from '../shared/shared/shared.module';
 
 
 @NgModule({
@@ -22,13 +24,14 @@ import { SortComponent } from '../components/sort/sort.component';
     SearchBarComponent,
     NavigationBarComponent,
     SearchPipePipe,
-    SortComponent
+    SortComponent,
   ],
   imports: [
     CommonModule,
     ProductDetailsRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   providers: [
     EcommerceserviceService
