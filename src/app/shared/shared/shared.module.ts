@@ -9,6 +9,8 @@ import { LoaderComponent } from 'src/app/components/loader/loader.component';
   imports: [
     CommonModule
   ],
-  exports: []
+  exports: [
+    LoaderComponent
+  ]
 })
 export class SharedModule { }
