@@ -16,7 +16,7 @@ export class ProductShopComponent implements OnInit  {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    //private ecommerce: EcommerceserviceService,
+    private ecommerce: EcommerceserviceService,
     private router: Router
   ) {}
 
@@ -29,7 +29,7 @@ export class ProductShopComponent implements OnInit  {
   addToCart(product?: Product) {
     if (product) {
       product.quantity = 1;
-      //this.ecommerce.addToCart(product);
+      this.ecommerce.addToCart(product);
       this.router.navigate(['/product-details']);
     }
   }
