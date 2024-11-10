@@ -29,7 +29,6 @@ import { SharedModule } from '../shared/shared/shared.module';
   imports: [
     CommonModule,
     ProductDetailsRoutingModule,
-    HttpClientModule,
     FormsModule,
     SharedModule
   ],

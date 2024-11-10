@@ -10,10 +10,8 @@ const routes: Routes = [
     .then(m => m.ProductDetailsModule) 
   }, 
   { 
+    path: 'product-shop/:productId', loadChildren: () => import('./product-shop/product-shop.module').then(m => m.ProductShopModule),
     resolve: { product: ProductResolverService }, 
-    path: 'product-shop/:productId', 
-    loadChildren: () => import('./product-shop/product-shop.module')
-    .then(m => m.ProductShopModule),
   },
   { 
     path: 'home', 

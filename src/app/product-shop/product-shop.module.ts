@@ -5,6 +5,7 @@ import { ProductShopRoutingModule } from './product-shop-routing.module';
 import { ProductShopComponent } from './product-shop.component';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from '../shared/shared/shared.module';
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     ProductShopRoutingModule,
-    HttpClientModule
+    SharedModule
   ],
   providers: []
 })

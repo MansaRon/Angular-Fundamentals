@@ -1,17 +1,20 @@
-import { ResolveFn } from "@angular/router";
+import { ActivatedRouteSnapshot, Resolve, ResolveFn, RouterStateSnapshot } from "@angular/router";
 import { Product } from "../model/productInterface";
-import { inject } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { EcommerceserviceService } from "./ecommerceservice.service";
-import { catchError, of } from "rxjs";
+import { catchError, Observable, of } from "rxjs";
 
-export const ProductResolverService: ResolveFn<Product | null> = (route, state) => {
-  const productService = inject(EcommerceserviceService);
-  const productId = Number(route.paramMap.get('id'));
+@Injectable({ providedIn: 'root' })
+export class ProductResolverService implements Resolve<Product | null> {
+  constructor(private productService: EcommerceserviceService) {}
 
-  return productService.getSingleProduct(productId).pipe(
-    catchError((error) => {
-      console.log(`Can't load products`, error);
-      return of(null);
-    })
-  )
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Product | null> {
+    const productId = Number(route.paramMap.get('productId'));
+    return this.productService.getSingleProduct(productId).pipe(
+      catchError((error) => {
+        console.error(`Failed to load product with id: ${productId}`, error);
+        return of(null);
+      })
+    );
+  }
 }
