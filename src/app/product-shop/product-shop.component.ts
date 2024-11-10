@@ -16,27 +16,20 @@ export class ProductShopComponent implements OnInit  {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private ecommerce: EcommerceserviceService,
+    //private ecommerce: EcommerceserviceService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.activatedRoute.snapshot.paramMap.get("productId"));
-    this.loadSingleProduct(id);
-  }
-
-  loadSingleProduct(id: number) {
-    this.ecommerce.getSingleProduct(id)
-    .pipe(
-      map((response) => (this.product = response))
-    )
-    .subscribe();
+    this.product = this.activatedRoute.snapshot.data['product'];
+    console.log(this.product);
+    //this.loadSingleProduct(id);
   }
 
   addToCart(product?: Product) {
     if (product) {
       product.quantity = 1;
-      this.ecommerce.addToCart(product);
+      //this.ecommerce.addToCart(product);
       this.router.navigate(['/product-details']);
     }
   }

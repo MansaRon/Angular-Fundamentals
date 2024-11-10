@@ -33,8 +33,6 @@ import { SharedModule } from '../shared/shared/shared.module';
     FormsModule,
     SharedModule
   ],
-  providers: [
-    EcommerceserviceService
-  ]
+  providers: []
 })
 export class ProductDetailsModule { }

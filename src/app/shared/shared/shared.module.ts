@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from 'src/app/components/loader/loader.component';
+import { EcommerceserviceService } from 'src/app/service/ecommerceservice.service';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,9 @@ import { LoaderComponent } from 'src/app/components/loader/loader.component';
   ],
   exports: [
     LoaderComponent
+  ],
+  providers: [
+    EcommerceserviceService
   ]
 })
 export class SharedModule { }

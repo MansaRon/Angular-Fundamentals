@@ -16,8 +16,6 @@ import { HttpClientModule } from '@angular/common/http';
     ProductShopRoutingModule,
     HttpClientModule
   ],
-  providers: [
-    EcommerceserviceService
-  ]
+  providers: []
 })
 export class ProductShopModule { }

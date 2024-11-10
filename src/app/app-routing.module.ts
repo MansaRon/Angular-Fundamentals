@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ProductResolverService } from './service/productresolver.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/product-details', pathMatch: 'full' },
@@ -9,9 +10,10 @@ const routes: Routes = [
     .then(m => m.ProductDetailsModule) 
   }, 
   { 
+    resolve: { product: ProductResolverService }, 
     path: 'product-shop/:productId', 
     loadChildren: () => import('./product-shop/product-shop.module')
-    .then(m => m.ProductShopModule) 
+    .then(m => m.ProductShopModule),
   },
   { 
     path: 'home', 
