@@ -3,3 +3,6 @@ Create guards
 State Management
 Have utils class
 Create footer for viewing cart (Appears once cart items are added) 
+User reviews and ratings display
+Integration of a payment gateway
+Wishlist functionalities
