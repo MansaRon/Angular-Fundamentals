@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../model/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { map, tap } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-details',
@@ -18,25 +18,17 @@ export class ProductDetailsComponent implements OnInit {
   isCartModalOpen = false; // Controls modal visibility
   filterText: string = '';
 
-  constructor(private ecommerce: EcommerceserviceService, private router: Router) {}
+  constructor(
+    private ecommerce: EcommerceserviceService, 
+    private router: Router,
+    private activatedRoute: ActivatedRoute,) {}
   
   ngOnInit(): void {
-    this.getProducts();
+    this.products = this.activatedRoute.snapshot.data['details'];
     const storedCart = sessionStorage.getItem('cart');
     if (storedCart) {
       this.productsInCart = JSON.parse(storedCart) as Product[]; // Parse and assign to productsInCart
     }
-  }
-
-  getProducts() {
-    this.ecommerce.getProducts()
-    .pipe(
-      map(product => (
-        this.products = product
-      )),
-      tap((_) => (this.loader = true))
-    )
-    .subscribe();
   }
 
   toggleModal() {

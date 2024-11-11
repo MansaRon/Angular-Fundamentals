@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductResolverService } from './service/productresolver.service';
+import { ProductdetailResolverService } from './service/productdetailresolver.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/product-details', pathMatch: 'full' },
   { 
     path: 'product-details', 
     loadChildren: () => import('./product-details/product-details.module')
-    .then(m => m.ProductDetailsModule) 
+    .then(m => m.ProductDetailsModule),
+    resolve: { details: ProductdetailResolverService } 
   }, 
   { 
     path: 'product-shop/:productId', loadChildren: () => import('./product-shop/product-shop.module').then(m => m.ProductShopModule),
