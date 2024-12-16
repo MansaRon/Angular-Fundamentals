@@ -4,16 +4,16 @@ import { CommonModule } from '@angular/common';
 import { ProductDetailsRoutingModule } from './product-details-routing.module';
 import { ProductDetailsComponent } from './product-details.component';
 import { PurchaseModalComponent } from '../components/purchase-modal/purchase-modal.component';
-import { HttpClientModule } from '@angular/common/http';
-import { EcommerceserviceService } from '../service/ecommerceservice.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ViewCartComponent } from '../components/view-cart-modal/view-cart.component';
 import { SearchBarComponent } from '../components/search-bar/search-bar.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { NavigationBarComponent } from '../components/navigation-bar/navigation-bar.component';
 import { SearchPipePipe } from '../pipes/search-pipe.pipe';
 import { SortComponent } from '../components/sort/sort.component';
-import { LoaderComponent } from '../components/loader/loader.component';
 import { SharedModule } from '../shared/shared/shared.module';
+import { LoggingInterceptor } from '../interceptor/logging.interceptor';
+import { ErrorInterceptor } from '../interceptor/error.interceptor';
 
 
 @NgModule({
@@ -32,6 +32,17 @@ import { SharedModule } from '../shared/shared/shared.module';
     FormsModule,
     SharedModule
   ],
-  providers: []
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, 
+      useClass: LoggingInterceptor, 
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS, 
+      useClass: ErrorInterceptor, 
+      multi: true
+    }
+  ]
 })
 export class ProductDetailsModule { }
