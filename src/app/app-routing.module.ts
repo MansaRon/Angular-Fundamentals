@@ -40,6 +40,10 @@ const routes: Routes = [
     loadChildren: () => import('./thank-you/thank-you.module')
     .then(m => m.ThankYouModule) 
   },
+  { path: 'register', 
+    loadChildren: () => import('./register/register.module')
+    .then(m => m.RegisterModule) 
+  },
   { 
     path: '**', 
     loadChildren: () => import('./page-not-found/page-not-found.module')

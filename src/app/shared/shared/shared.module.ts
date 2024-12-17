@@ -4,6 +4,7 @@ import { LoaderComponent } from 'src/app/components/loader/loader.component';
 import { EcommerceserviceService } from 'src/app/service/ecommerceservice.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductResolverService } from 'src/app/service/productresolver.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { ProductResolverService } from 'src/app/service/productresolver.service'
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   exports: [
     LoaderComponent
