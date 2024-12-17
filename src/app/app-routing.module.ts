@@ -40,9 +40,15 @@ const routes: Routes = [
     loadChildren: () => import('./thank-you/thank-you.module')
     .then(m => m.ThankYouModule) 
   },
-  { path: 'register', 
+  { 
+    path: 'register', 
     loadChildren: () => import('./register/register.module')
     .then(m => m.RegisterModule) 
+  },
+  { 
+    path: 'login', 
+    loadChildren: () => import('./login/login.module')
+    .then(m => m.LoginModule) 
   },
   { 
     path: '**', 
