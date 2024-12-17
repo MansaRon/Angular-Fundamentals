@@ -6,16 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthguardGuard implements CanActivate {
+  constructor(private router: Router) {}
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const router = inject(Router);
     if (localStorage.getItem('isLogged')) {
       console.log(state);
       return true;
     } else {
       console.log(state);
-      router.navigate(['/login']);
+      this.router.navigate(['/login']);
       return false;
     }
   }

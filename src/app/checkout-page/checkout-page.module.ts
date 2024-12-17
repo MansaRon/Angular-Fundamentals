@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from '../shared/shared/shared.module';
 import { AuthInterceptor } from '../interceptor/auth.interceptor';
+import { AuthguardGuard } from '../guards/authguard.guard';
 
 
 @NgModule({
@@ -18,12 +19,14 @@ import { AuthInterceptor } from '../interceptor/auth.interceptor';
     CheckoutPageRoutingModule,
     ReactiveFormsModule,
     SharedModule
-  ], providers: [
+  ], 
+  providers: [
     {
       provide: HTTP_INTERCEPTORS, 
       useClass: AuthInterceptor, 
       multi: true
-    }
+    },
+    AuthguardGuard
   ]
 })
 export class CheckoutPageModule { }
