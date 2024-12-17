@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductResolverService } from './service/productresolver.service';
 import { ProductdetailResolverService } from './service/productdetailresolver.service';
+import { AuthguardGuard } from './guards/authguard.guard';
 
 const routes: Routes = [
   { 
@@ -33,12 +34,14 @@ const routes: Routes = [
   { 
     path: 'checkout', 
     loadChildren: () => import('./checkout-page/checkout-page.module')
-    .then(m => m.CheckoutPageModule) 
+    .then(m => m.CheckoutPageModule),
+    canActivate: [AuthguardGuard]
   },
   { 
     path: 'thank-you', 
     loadChildren: () => import('./thank-you/thank-you.module')
-    .then(m => m.ThankYouModule) 
+    .then(m => m.ThankYouModule),
+    canActivate: [AuthguardGuard]
   },
   { 
     path: 'register', 
