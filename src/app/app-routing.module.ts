@@ -17,7 +17,8 @@ const routes: Routes = [
     resolve: { details: ProductdetailResolverService } 
   }, 
   { 
-    path: 'product-shop/:productId', loadChildren: () => import('./product-shop/product-shop.module')
+    path: 'product-shop/:productId', 
+    loadChildren: () => import('./product-shop/product-shop.module')
     .then(m => m.ProductShopModule),
     resolve: { product: ProductResolverService }, 
   },
