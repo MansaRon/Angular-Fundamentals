@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router'
 
 @Component({
   selector: 'app-register',
@@ -11,9 +12,9 @@ export class RegisterComponent implements OnInit {
   isRegistered: boolean = false;
   registerForm!: FormGroup;
   regexName = new RegExp(`^[a-zA-Z0-9 :,/'?.+()-]*$`);
-  regexPassword = new RegExp(``);
-  regexNumber = new RegExp(`/^\d+$/`);
-  constructor() {}
+  regexPassword = new RegExp(`/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{6,15}$/`);
+  regexNumber = new RegExp(`^[0-9]+$`);
+  constructor(private activedRouter: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.registerForm = new FormGroup({
@@ -24,6 +25,7 @@ export class RegisterComponent implements OnInit {
       phoneNumber: new FormControl('', [
         Validators.required,
         Validators.maxLength(10),
+        Validators.minLength(10),
         Validators.pattern(this.regexNumber)
       ]),
       email: new FormControl('', [
@@ -34,16 +36,16 @@ export class RegisterComponent implements OnInit {
         Validators.required, 
         Validators.minLength(6),
         Validators.maxLength(15),
-        Validators.pattern(this.regexPassword)
+        //Validators.pattern(this.regexPassword)
       ]),
       confirmPassword: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
         Validators.maxLength(15),
-        Validators.pattern(this.regexPassword)
+        //Validators.pattern(this.regexPassword)
       ])
     }, {
-      validators: this.passwordConfirming.bind(this),
+      //validators: this.passwordConfirming,
     })
   }
 
@@ -51,14 +53,13 @@ export class RegisterComponent implements OnInit {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
   
-    return password && confirmPassword && password !== confirmPassword
-      ? { passwordsMismatch: true }
-      : null;
+    return password && confirmPassword !== confirmPassword ? { passwordsMismatch: true } : null;
   }
 
   getErrorMessage(controlName: string): string | null {
     const control = this.registerForm.get(controlName);
-  
+    console.log(control);
+    
     if (control?.hasError('required')) {
       return 'This field is required.';
     }
@@ -86,13 +87,18 @@ export class RegisterComponent implements OnInit {
     if (control?.hasError('maxlength')) {
       return `Maximum length is ${control.errors?.['maxlength'].requiredLength}.`;
     }
-  
-    if (
-      controlName === 'confirmPassword' &&
-      this.registerForm.hasError('passwordsMismatch')
-    ) {
-      return 'Passwords do not match.';
+    console.log(controlName);
+    
+    if (control?.value.password !== control?.value.confirmPassword) {
+      return `Passwords do not match.`;
     }
+  
+    // if (
+    //   controlName === 'confirmPassword' &&
+    //   this.registerForm.hasError('passwordsMismatch')
+    // ) {
+    //   return 'Passwords do not match.';
+    // }
   
     return null; // No errors
   }
@@ -101,14 +107,19 @@ export class RegisterComponent implements OnInit {
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    this.registerForm.valueChanges.subscribe((response: any) => console.log(response));
+    // this.registerForm.valueChanges.subscribe((response: any) => console.log(response));
   }
 
   onSubmit() {
     if (this.registerForm.invalid) {
+      //console.log(this.registerForm.value);
       this.registerForm.markAllAsTouched(); // Highlight all invalid fields
     } else {
       console.log('Form Submitted', this.registerForm.value);
+      this.router.navigate([`../`, `login`], {
+        relativeTo: this.activedRouter,
+        state: { fromStep: 'register' }
+      })
     }
   }
 
