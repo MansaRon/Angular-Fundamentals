@@ -45,20 +45,23 @@ export class RegisterComponent implements OnInit {
         //Validators.pattern(this.regexPassword)
       ])
     }, {
-      //validators: this.passwordConfirming,
+      validators: this.passwordConfirming,
     })
   }
 
   passwordConfirming: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
-  
-    return password && confirmPassword !== confirmPassword ? { passwordsMismatch: true } : null;
+    console.log('inside here');
+    
+    return password === confirmPassword
+    ? null
+    : { passwordsMismatch: true };
   }
 
   getErrorMessage(controlName: string): string | null {
     const control = this.registerForm.get(controlName);
-    console.log(control);
+    //console.log(control);
     
     if (control?.hasError('required')) {
       return 'This field is required.';
@@ -87,18 +90,11 @@ export class RegisterComponent implements OnInit {
     if (control?.hasError('maxlength')) {
       return `Maximum length is ${control.errors?.['maxlength'].requiredLength}.`;
     }
-    console.log(controlName);
+    //console.log(controlName);
     
-    if (control?.value.password !== control?.value.confirmPassword) {
-      return `Passwords do not match.`;
-    }
-  
-    // if (
-    //   controlName === 'confirmPassword' &&
-    //   this.registerForm.hasError('passwordsMismatch')
-    // ) {
-    //   return 'Passwords do not match.';
-    // }
+    if (controlName === 'confirmPassword' && this.registerForm.hasError('passwordsMismatch')) {
+      return 'Passwords do not match.';
+    }    
   
     return null; // No errors
   }
