@@ -112,7 +112,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.markAllAsTouched(); // Highlight all invalid fields
     } else {
       console.log('Form Submitted', this.registerForm.value);
-      this.router.navigate([`../`, `login`], {
+      this.router.navigate([`../`, `otp`], {
         relativeTo: this.activedRouter,
         state: { fromStep: 'register' }
       })

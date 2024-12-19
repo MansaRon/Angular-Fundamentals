@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductResolverService } from './service/productresolver.service';
 import { ProductdetailResolverService } from './service/productdetailresolver.service';
 import { AuthguardGuard } from './guards/authguard.guard';
+import { OtpComponent } from './otp/otp.component';
 
 const routes: Routes = [
   { 
@@ -53,6 +54,10 @@ const routes: Routes = [
     path: 'login', 
     loadChildren: () => import('./login/login.module')
     .then(m => m.LoginModule) 
+  },
+  {
+    path: 'otp',
+    component: OtpComponent
   },
   { 
     path: '**', 
