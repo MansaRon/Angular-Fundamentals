@@ -7,11 +7,13 @@ import { EcommerceserviceService } from './service/ecommerceservice.service';
 import { SharedModule } from './shared/shared/shared.module';
 import { OtpComponent } from './otp/otp.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OtpComponent
+    OtpComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

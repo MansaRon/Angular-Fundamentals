@@ -4,6 +4,7 @@ import { ProductResolverService } from './service/productresolver.service';
 import { ProductdetailResolverService } from './service/productdetailresolver.service';
 import { AuthguardGuard } from './guards/authguard.guard';
 import { OtpComponent } from './otp/otp.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
   { 
@@ -58,6 +59,10 @@ const routes: Routes = [
   {
     path: 'otp',
     component: OtpComponent
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
   },
   { 
     path: '**', 
