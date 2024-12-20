@@ -21,6 +21,28 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  getErrorMessage(controlName: string): string | null {
+    const control = this.loginForm.get(controlName);
+    
+    if (control?.hasError('required')) {
+      return 'This field is required.';
+    }
+    
+    if (control?.hasError('email')) {
+      return 'Enter a valid email address.';
+    }
+  
+    if (control?.hasError('minlength')) {
+      return `Minimum length is ${control.errors?.['minlength'].requiredLength}.`;
+    }
+  
+    if (control?.hasError('maxlength')) {
+      return `Maximum length is ${control.errors?.['maxlength'].requiredLength}.`;
+    }
+   
+    return null;
+  }
+
   onSubmit() {
     console.log(this.loginForm.value);
   }
