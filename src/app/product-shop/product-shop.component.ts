@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Products } from '../model/product';
 import { Product } from '../model/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
-import { map } from 'rxjs';
-import { state } from '@angular/animations';
 
 @Component({
   selector: 'app-product-shop',
@@ -22,8 +19,6 @@ export class ProductShopComponent implements OnInit  {
 
   ngOnInit(): void {
     this.product = this.activatedRoute.snapshot.data['product'];
-    console.log(this.product);
-    //this.loadSingleProduct(id);
   }
 
   addToCart(product?: Product) {
