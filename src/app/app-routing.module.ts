@@ -65,6 +65,11 @@ const routes: Routes = [
     component: ResetPasswordComponent
   },
   { 
+    path: 'wishlist', 
+    loadChildren: () => import('./wishlist/wishlist.module')
+    .then(m => m.WishlistModule) 
+  },
+  { 
     path: '**', 
     loadChildren: () => import('./page-not-found/page-not-found.module')
     .then(m => m.PageNotFoundModule) 

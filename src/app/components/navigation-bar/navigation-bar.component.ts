@@ -24,4 +24,8 @@ export class NavigationBarComponent implements OnInit {
     this.router.navigate(['/view-cart']);
   }
 
+  viewWishList() {
+    this.router.navigate(['/wishlist']);
+  }
+
 }
