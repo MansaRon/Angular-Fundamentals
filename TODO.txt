@@ -3,3 +3,4 @@ Have utils class
 User reviews and ratings display
 Integration of a payment gateway
 Create mock data for the objects
+Implement formgroup controls for signup, login, forgot password and checkout process
