@@ -12,6 +12,7 @@ export class ViewCartComponent implements OnInit {
 
   products?: Product[];
   loader = false;
+  message: string = 'Your shopping cart is currently empty.';
 
   constructor(private ecommerce: EcommerceserviceService, private router: Router) {}
   

@@ -3,10 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SharedModule } from './shared/shared/shared.module';
+import { SharedModuleSharedModule } from './shared/shared/shared.module';
 import { OtpComponent } from './otp/otp.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { NoItemsComponent } from './components/no-items/no-items.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SharedModule,
+    SharedModuleSharedModule,
     ReactiveFormsModule
   ],
   providers: [

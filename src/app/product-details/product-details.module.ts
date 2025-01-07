@@ -11,9 +11,9 @@ import { FormsModule } from '@angular/forms';
 import { NavigationBarComponent } from '../components/navigation-bar/navigation-bar.component';
 import { SearchPipePipe } from '../pipes/search-pipe.pipe';
 import { SortComponent } from '../components/sort/sort.component';
-import { SharedModule } from '../shared/shared/shared.module';
 import { LoggingInterceptor } from '../interceptor/logging.interceptor';
 import { ErrorInterceptor } from '../interceptor/error.interceptor';
+import { SharedModuleSharedModule } from '../shared/shared/shared.module';
 
 
 @NgModule({
@@ -30,7 +30,7 @@ import { ErrorInterceptor } from '../interceptor/error.interceptor';
     CommonModule,
     ProductDetailsRoutingModule,
     FormsModule,
-    SharedModule
+    SharedModuleSharedModule
   ],
   providers: [
     {

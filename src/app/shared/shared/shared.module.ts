@@ -1,23 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from 'src/app/components/loader/loader.component';
-import { EcommerceserviceService } from 'src/app/service/ecommerceservice.service';
 import { HttpClientModule } from '@angular/common/http';
-import { ProductResolverService } from 'src/app/service/productresolver.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NoItemsComponent } from 'src/app/components/no-items/no-items.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
-    LoaderComponent
+    LoaderComponent,
+    NoItemsComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
-    LoaderComponent
+    LoaderComponent,
+    NoItemsComponent
   ],
   providers: []
 })
-export class SharedModule { }
+export class SharedModuleSharedModule { }

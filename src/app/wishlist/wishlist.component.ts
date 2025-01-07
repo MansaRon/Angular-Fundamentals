@@ -13,6 +13,8 @@ export class WishlistComponent {
 
   showNotification: boolean = false;
 
+  message: string = 'Your wishlist is currently empty.';
+
   constructor(private wishListService: WishlistService) {}
 
   ngOnInit(): void {
@@ -21,6 +23,7 @@ export class WishlistComponent {
 
   loadWishlist(): void {
     this.wishlistItems = this.wishListService.getWishList();
+    console.log(this.wishlistItems);
   }
 
   removeItem(item: Product): void {

@@ -6,7 +6,7 @@ import { ViewCartComponent } from './view-cart.component';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LoaderComponent } from '../components/loader/loader.component';
-import { SharedModule } from '../shared/shared/shared.module';
+import { SharedModuleSharedModule } from '../shared/shared/shared.module';
 
 
 @NgModule({
@@ -17,7 +17,7 @@ import { SharedModule } from '../shared/shared/shared.module';
     CommonModule,
     ViewCartRoutingModule,
     HttpClientModule,
-    SharedModule
+    SharedModuleSharedModule
   ],
   providers: [
     EcommerceserviceService

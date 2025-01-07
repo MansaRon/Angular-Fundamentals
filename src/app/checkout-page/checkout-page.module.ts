@@ -5,7 +5,7 @@ import { CheckoutPageRoutingModule } from './checkout-page-routing.module';
 import { CheckoutPageComponent } from './checkout-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SharedModule } from '../shared/shared/shared.module';
+import { SharedModuleSharedModule } from '../shared/shared/shared.module';
 import { AuthInterceptor } from '../interceptor/auth.interceptor';
 import { AuthguardGuard } from '../guards/authguard.guard';
 
@@ -18,7 +18,7 @@ import { AuthguardGuard } from '../guards/authguard.guard';
     CommonModule,
     CheckoutPageRoutingModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModuleSharedModule
   ], 
   providers: [
     {
