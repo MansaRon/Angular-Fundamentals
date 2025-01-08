@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Product } from '../model/productInterface';
 import { WishlistService } from '../service/wishlist.service';
+import { EcommerceserviceService } from '../service/ecommerceservice.service';
 
 @Component({
   selector: 'app-wishlist',
@@ -11,11 +12,14 @@ export class WishlistComponent {
 
   wishlistItems: Product[] = [];
 
-  showNotification: boolean = false;
+  showWishListNotification: boolean = false;
+
+  showCartNotification: boolean = false;
 
   message: string = 'Your wishlist is currently empty.';
 
-  constructor(private wishListService: WishlistService) {}
+  constructor(private wishListService: WishlistService,
+              private ecommerce: EcommerceserviceService) {}
 
   ngOnInit(): void {
     this.loadWishlist();
@@ -23,14 +27,22 @@ export class WishlistComponent {
 
   loadWishlist(): void {
     this.wishlistItems = this.wishListService.getWishList();
-    console.log(this.wishlistItems);
   }
 
   removeItem(item: Product): void {
     this.wishListService.removeItemFromWishlist(item.id);
+    this.showWishListNotification = true;
     this.loadWishlist();
     setTimeout(() => {
-      this.showNotification = false;
+      this.showWishListNotification = false;
+    }, 3000);
+  }
+
+  addToCart(item: Product) {
+    this.ecommerce.addToCart(item);
+    this.showCartNotification = true;
+    setTimeout(() => {
+      this.showCartNotification = false;
     }, 3000);
   }
 
