@@ -38,13 +38,13 @@ const routes: Routes = [
     path: 'checkout', 
     loadChildren: () => import('./checkout-page/checkout-page.module')
     .then(m => m.CheckoutPageModule),
-    canActivate: [AuthguardGuard]
+    //canActivate: [AuthguardGuard]
   },
   { 
     path: 'thank-you', 
     loadChildren: () => import('./thank-you/thank-you.module')
     .then(m => m.ThankYouModule),
-    canActivate: [AuthguardGuard]
+    //canActivate: [AuthguardGuard]
   },
   { 
     path: 'register', 

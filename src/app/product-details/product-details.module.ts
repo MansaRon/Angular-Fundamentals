@@ -14,6 +14,7 @@ import { SortComponent } from '../components/sort/sort.component';
 import { LoggingInterceptor } from '../interceptor/logging.interceptor';
 import { ErrorInterceptor } from '../interceptor/error.interceptor';
 import { SharedModuleSharedModule } from '../shared/shared/shared.module';
+import { CoreInterceptor } from '../interceptor/core.interceptor';
 
 
 @NgModule({
@@ -41,6 +42,11 @@ import { SharedModuleSharedModule } from '../shared/shared/shared.module';
     {
       provide: HTTP_INTERCEPTORS, 
       useClass: ErrorInterceptor, 
+      multi: true
+    }, 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CoreInterceptor,
       multi: true
     }
   ]
