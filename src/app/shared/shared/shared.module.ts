@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { OtpComponent } from 'src/app/otp/otp.component';
 import { ResetPasswordComponent } from 'src/app/reset-password/reset-password.component';
+import { NavigationBarComponent } from 'src/app/components/navigation-bar/navigation-bar.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { ResetPasswordComponent } from 'src/app/reset-password/reset-password.co
     NoItemsComponent,
     OtpComponent,
     ResetPasswordComponent,
-    FooterComponent
+    FooterComponent,
+    NavigationBarComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { ResetPasswordComponent } from 'src/app/reset-password/reset-password.co
     NoItemsComponent,
     OtpComponent,
     ResetPasswordComponent,
-    FooterComponent
+    FooterComponent,
+    NavigationBarComponent,
   ],
   providers: []
 })

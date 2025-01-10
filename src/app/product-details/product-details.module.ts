@@ -23,7 +23,6 @@ import { CoreInterceptor } from '../interceptor/core.interceptor';
     PurchaseModalComponent,
     ViewCartComponent,
     SearchBarComponent,
-    NavigationBarComponent,
     SearchPipePipe,
     SortComponent,
   ],
