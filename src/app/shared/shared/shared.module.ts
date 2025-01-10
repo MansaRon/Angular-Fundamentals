@@ -5,11 +5,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoItemsComponent } from 'src/app/components/no-items/no-items.component';
 import { RouterModule } from '@angular/router';
+import { FooterComponent } from 'src/app/components/footer/footer.component';
+import { OtpComponent } from 'src/app/otp/otp.component';
+import { ResetPasswordComponent } from 'src/app/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
     LoaderComponent,
-    NoItemsComponent
+    NoItemsComponent,
+    OtpComponent,
+    ResetPasswordComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +25,10 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     LoaderComponent,
-    NoItemsComponent
+    NoItemsComponent,
+    OtpComponent,
+    ResetPasswordComponent,
+    FooterComponent
   ],
   providers: []
 })

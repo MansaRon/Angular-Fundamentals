@@ -8,12 +8,11 @@ import { OtpComponent } from './otp/otp.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NoItemsComponent } from './components/no-items/no-items.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    OtpComponent,
-    ResetPasswordComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
