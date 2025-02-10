@@ -45,6 +45,8 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     console.log(this.loginForm.value);
+    localStorage.setItem('isLogged', 'true');
+    this.router.navigate(['/home']);
   }
 
 }
