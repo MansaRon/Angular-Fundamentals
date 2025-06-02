@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../model/productInterface';
-import { map } from 'rxjs';
+import { map, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,10 @@ export class EcommerceserviceService {
   }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.url);
+    return this.http.get<Product[]>(this.url)
+    .pipe(
+      shareReplay(),
+    );
   }
 
   getSingleProduct(params: number): Observable<Product>{
@@ -95,39 +98,24 @@ export class EcommerceserviceService {
     const tax = this.getTaxAmount();
     return cartTotal + tax;
   }  
-  
-  getCartSortBy(sortString: string): Observable<Product[]> {
-    return this.getProducts().pipe(
-      map(products => {
-        return this.sortProducts(products, sortString);
-      })
-    )
-  }
 
-  private sortProducts(products: Product[], sortType: string): Product[] {
+  sortProducts(products: Product[], sortType: string): Product[] {
     switch (sortType) {
-      case 'name-asc': // Name A-Z
-        return products.sort((a, b) => a.title.localeCompare(b.title));
-      case 'name-desc': // Name Z-A
-        return products.sort((a, b) => b.title.localeCompare(a.title));
-      case 'price-asc': // Price Low to High
-        return products.sort((a, b) => a.price - b.price);
-      case 'price-desc': // Price High to Low
-        return products.sort((a, b) => b.price - a.price);
-      case 'rating-asc': // Rating Low to High
-        return products.sort((a, b) => {
-          const ratingA = a.rating?.rate ?? 0;
-          const ratingB = b.rating?.rate ?? 0;
-          return ratingA - ratingB;
-        });
-      case 'rating-desc': // Rating High to Low
-        return products.sort((a, b) => {
-          const ratingA = a.rating?.rate ?? 0;
-          const ratingB = b.rating?.rate ?? 0;
-          return ratingB - ratingA;
-        });
+      case 'name-asc':
+        return [...products].sort((a, b) => a.title.localeCompare(b.title));
+      case 'name-desc':
+        return [...products].sort((a, b) => b.title.localeCompare(a.title));
+      case 'price-asc':
+        return [...products].sort((a, b) => a.price - b.price);
+      case 'price-desc':
+        return [...products].sort((a, b) => b.price - a.price);
+      case 'rating-asc':
+        return [...products].sort((a, b) => (a.rating?.rate ?? 0) - (b.rating?.rate ?? 0));
+      case 'rating-desc':
+        return [...products].sort((a, b) => (b.rating?.rate ?? 0) - (a.rating?.rate ?? 0));
       default:
-        return products; // Return unsorted if no valid sort type
+        return products;
     }
   }
+  
 }

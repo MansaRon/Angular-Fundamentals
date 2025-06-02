@@ -1,33 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../model/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
-import { map, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.css']
+  styleUrls: ['./product-details.component.css'],
 })
 export class ProductDetailsComponent implements OnInit {
   showModal: boolean = false;
   selectedProduct!: Product;
-  products: Product[] = [];
   loader = false;
   productsInCart?: Product[] = [];
-  isCartModalOpen = false; // Controls modal visibility
+  isCartModalOpen = false; 
   filterText: string = '';
+  products$!: Observable<Product[]>;
+  private sort$ = new BehaviorSubject<string>('price-asc');
 
   constructor(
-    private ecommerce: EcommerceserviceService, 
-    private router: Router,
-    private activatedRoute: ActivatedRoute,) {}
+    private ecommerce: EcommerceserviceService) {}
   
   ngOnInit(): void {
-    this.products = this.activatedRoute.snapshot.data['details'];
+    const rawProducts$ = this.ecommerce.getProducts();
+    this.products$ = combineLatest([rawProducts$, this.sort$])
+    .pipe(
+      map(([products, sortType]) => this.ecommerce.sortProducts(products, sortType)),
+      tap(() => (this.loader = true))
+    );
     const storedCart = sessionStorage.getItem('cart');
     if (storedCart) {
-      this.productsInCart = JSON.parse(storedCart) as Product[]; // Parse and assign to productsInCart
+      this.productsInCart = JSON.parse(storedCart) as Product[];
     }
   }
 
@@ -49,15 +53,10 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   onSearchTextChanged(searchText: string) {
-    this.filterText = searchText; // Update the searchText variable
+    this.filterText = searchText;
   }
 
   onSortSelected(sortString: string) {
-    this.ecommerce
-    .getCartSortBy(sortString)
-    .pipe(
-      map(productSort => (this.products = productSort)),
-      tap((_) => (this.loader = true)))
-      .subscribe();
+    this.sort$.next(sortString);
   }
 }
