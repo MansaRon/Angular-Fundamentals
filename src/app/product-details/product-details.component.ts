@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../model/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
+import { WishlistService } from '../service/wishlist.service';
 import { BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -20,7 +21,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private ecommerce: EcommerceserviceService
+    private ecommerce: EcommerceserviceService,
+    private wishlistService: WishlistService,
+    private router: Router
   ) {
     this.productsInCart$ = this.ecommerce.getCartItems();
   }
@@ -62,5 +65,21 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   onSortSelected(sortString: string): void {
     this.sort$.next(sortString);
+  }
+
+  toggleWishlist(product: Product): void {
+    this.wishlistService.isInWishlist(product.id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(isInWishlist => {
+      if (isInWishlist) {
+        this.wishlistService.removeFromWishlist(product.id);
+      } else {
+        this.wishlistService.addToWishlist(product);
+      }
+    });
+  }
+
+  isInWishlist(productId: number): Observable<boolean> {
+    return this.wishlistService.isInWishlist(productId);
   }
 }

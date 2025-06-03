@@ -57,7 +57,13 @@ export class CartStore extends ComponentStore<CartState> {
       }
       return {
         ...state,
-        productsInCart: [...state.productsInCart, { ...product, quantity: product.quantity || 1 }]
+        productsInCart: [
+          ...state.productsInCart, 
+          { 
+            ...product, 
+            quantity: product.quantity || 1 
+          }
+        ]
       };
     }
   );

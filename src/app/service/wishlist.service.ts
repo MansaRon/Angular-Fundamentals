@@ -1,30 +1,35 @@
 import { Injectable } from '@angular/core';
+import { WishlistStore } from '../store/wishlist.store';
 import { Product } from '../model/productInterface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WishlistService {
+  constructor(private wishlistStore: WishlistStore) {}
 
-  constructor() { }
-
-  getWishList() {
-    return JSON.parse(localStorage.getItem('wishlist') || '[]');
+  getWishlistItems(): Observable<Product[]> {
+    return this.wishlistStore.items$;
   }
 
-  addToWishList(item: Product) {
-    const wishlist: Product[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    wishlist.push(item);
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  getWishlistCount(): Observable<number> {
+    return this.wishlistStore.itemCount$;
   }
 
-  removeItemFromWishlist(itemId: number) {
-    const wishlist: Product[] = JSON.parse(localStorage.getItem('wishlist') || '[]');
-    const updatedWishlist = wishlist.filter(item => item.id !== itemId);
-    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+  addToWishlist(product: Product): void {
+    this.wishlistStore.addToWishlist(product);
   }
 
-  clearWishlist() {
-    localStorage.removeItem('wishlist');
+  removeFromWishlist(productId: number): void {
+    this.wishlistStore.removeFromWishlist(productId);
+  }
+
+  clearWishlist(): void {
+    this.wishlistStore.clearWishlist();
+  }
+
+  isInWishlist(productId: number): Observable<boolean> {
+    return this.wishlistStore.isInWishlist(productId);
   }
 }

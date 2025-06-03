@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { EcommerceserviceService } from '../../service/ecommerceservice.service';
+import { WishlistService } from '../../service/wishlist.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { Product } from 'src/app/model/productInterface';
-import { WishlistService } from 'src/app/service/wishlist.service';
-import { CartService } from 'src/app/service/cart.service';
-import { WishlistStore } from 'src/app/store/wishlist.store';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -12,22 +10,20 @@ import { WishlistStore } from 'src/app/store/wishlist.store';
   styleUrls: ['./navigation-bar.component.css']
 })
 export class NavigationBarComponent implements OnInit, OnDestroy {
-  productsInCart$!: Observable<Product[]>;
-  wishListItems$!: Observable<Product[]>;
+  productsInCart$: Observable<any[]>;
+  wishListItems$: Observable<any[]>;
   private destroy$ = new Subject<void>();
 
   constructor(
-    private router: Router,
-    private cartService: CartService,
-    private wishListStore: WishlistStore
-  ) {}
-  
-  ngOnInit(): void {
-    this.productsInCart$ = this.cartService.getProductsInCart().pipe(
-      takeUntil(this.destroy$)
-    );
-    this.wishListItems$ = this.wishListStore.wishListItems$;
+    private ecommerce: EcommerceserviceService,
+    private wishlistService: WishlistService,
+    private router: Router
+  ) {
+    this.productsInCart$ = this.ecommerce.getCartItems();
+    this.wishListItems$ = this.wishlistService.getWishlistItems();
   }
+
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.destroy$.next();

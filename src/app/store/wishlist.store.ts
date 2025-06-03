@@ -1,60 +1,36 @@
-import { Injectable } from "@angular/core";
-import { ComponentStore } from "@ngrx/component-store";
-import { Product } from "../model/productInterface";
+import { ComponentStore } from '@ngrx/component-store';
+import { Product } from '../model/productInterface';
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 
-export interface WishlistState {
-    wishListItems: Product[];
+interface WishlistState {
+  items: Product[];
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WishlistStore extends ComponentStore<WishlistState> {
   constructor() {
-    super({
-      wishListItems: []
-    });
-
-    // Optional: Load from sessionStorage at startup
-    const storedWishlist = sessionStorage.getItem('wishlist');
-    if (storedWishlist) {
-      const parsed = JSON.parse(storedWishlist) as Product[];
-      this.setWishListItems(parsed);
-    }
-
-    // Optional: Persist to sessionStorage on state changes
-    this.wishListItems$.subscribe(items => {
-      sessionStorage.setItem('wishlist', JSON.stringify(items));
-    });
+    super({ items: [] });
   }
 
-  // SELECTOR
-  readonly wishListItems$ = this.select(state => state.wishListItems);
+  readonly items$ = this.select(state => state.items);
+  readonly itemCount$ = this.select(state => state.items.length);
 
-  // UPDATERS
-  readonly setWishListItems = this.updater<Product[]>(
-    (state, items) => ({ 
-        ...state, 
-        wishListItems: items 
-    })
-  );
+  readonly addToWishlist = this.updater((state: WishlistState, item: Product) => ({
+    items: [...state.items, item]
+  }));
 
-  readonly addToWishList = this.updater<Product>(
-    (state, item) => ({
-      ...state,
-      wishListItems: [...state.wishListItems, item]
-    })
-  );
+  readonly removeFromWishlist = this.updater((state: WishlistState, itemId: number) => ({
+    items: state.items.filter(item => item.id !== itemId)
+  }));
 
-  readonly removeFromWishList = this.updater<number>(
-    (state, productId) => ({
-      ...state,
-      wishListItems: state.wishListItems.filter(p => p.id !== productId)
-    })
-  );
+  readonly clearWishlist = this.updater((state: WishlistState) => ({
+    items: []
+  }));
 
-  readonly clearWishList = this.updater(
-    state => ({ 
-        ...state, 
-        wishListItems: [] 
-    })
+  readonly isInWishlist = (productId: number) => this.select(
+    state => state.items.some(item => item.id === productId)
   );
 }
