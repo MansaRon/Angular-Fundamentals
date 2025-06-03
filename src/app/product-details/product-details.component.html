@@ -1,63 +1,52 @@
-
-
 <ng-template #mainScreen>
   <app-loader></app-loader>
 </ng-template>
   
-<ng-container *ngIf="products$; else mainScreen">
-    <div class="bg-white">
-      <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-
-        <div class="flex items-center space-x-4">
-          <div class="w-4/5">
-            <app-search-bar (searchFilterOutput)="onSearchTextChanged($event)"></app-search-bar>
-          </div>
-          <div class="w-1/5">
-            <app-sort (sortSelected)="onSortSelected($event)"></app-sort>
-          </div>
-        </div>        
-
-        <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          <a *ngFor="let product of (products$ | async) ?? [] | searchPipe: filterText" class="border border-gray-300 rounded-lg p-4 shadow-md">
-            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg xl:aspect-h-8 xl:aspect-w-7">
-              <img src="{{product.image}}" 
-                alt="{{product.description}}" 
-                class="scale-75 h-full w-full object-cover object-center group-hover:opacity-75">
-            </div>
-            <a 
-              (click)="openModal(product)"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-              {{product.title}}
-            </a>
-            <h3 class="text-sm text-gray-700">
-              <a>
-                <span aria-hidden="true" class="absolute"></span>
-                  {{product.rating.rate}}
-              </a>
-            </h3>
-            <p class="mt-1 text-lg font-medium text-gray-900">
-              {{product.price | currency: "USD"}}
-            </p>
-            <button type="button" 
-              [routerLink]="['/product-shop', product.id]" 
-              class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-              Purchase
-            </button>
-            <app-purchase-modal
-              [productChild]="selectedProduct" 
-              [isModalVisible]="showModal"
-              (closeModal)="toggleModal()">
-            </app-purchase-modal>
-          </a>
+<ng-container *ngIf="products$ | async as products">
+  <div class="bg-white">
+    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div class="flex items-center space-x-4">
+        <div class="w-4/5">
+          <app-search-bar (searchFilterOutput)="onSearchTextChanged($event)"></app-search-bar>
         </div>
+        <div class="w-1/5">
+          <app-sort (sortSelected)="onSortSelected($event)"></app-sort>
+        </div>
+      </div>        
+
+      <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+        <a *ngFor="let product of products | searchPipe: filterText" class="border border-gray-300 rounded-lg p-4 shadow-md">
+          <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg xl:aspect-h-8 xl:aspect-w-7">
+            <img src="{{product.image}}" 
+              alt="{{product.description}}" 
+              class="scale-75 h-full w-full object-cover object-center group-hover:opacity-75">
+          </div>
+          <a 
+            (click)="openModal(product)"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
+            {{product.title}}
+          </a>
+          <h3 class="text-sm text-gray-700">
+            <a>
+              <span aria-hidden="true" class="absolute"></span>
+                {{product.rating.rate}}
+            </a>
+          </h3>
+          <p class="mt-1 text-lg font-medium text-gray-900">
+            {{product.price | currency: "USD"}}
+          </p>
+          <button type="button" 
+            [routerLink]="['/product-shop', product.id]" 
+            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Purchase
+          </button>
+          <app-purchase-modal
+            [productChild]="selectedProduct" 
+            [isModalVisible]="showModal"
+            (closeModal)="toggleModal()">
+          </app-purchase-modal>
+        </a>
       </div>
     </div>
+  </div>
 </ng-container>
-
-<!-- Model with cart -->
-<app-view-cart 
-  [productsInCart]="productsInCart" 
-  [isCartModalOpen]="isCartModalOpen"
-  (closeModal)="viewCartModel()">
-</app-view-cart>
-<!-- Model with cart -->

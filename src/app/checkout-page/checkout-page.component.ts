@@ -7,6 +7,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { PAYMENT_OPTIONS, PaymentMethod } from '../model/paymentOptions';
 import { DELIVERY_OPTIONS, DeliveryMethod } from '../model/deliveryOptions';
 import { format } from '../model/numberFormat';
+import { Observable, combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-checkout-page',
@@ -103,26 +105,31 @@ export class CheckoutPageComponent implements OnInit {
     return promoControl?.valid && promoControl.value?.length === 6 ? 50 : 0;
   }
 
-  getCartSubTotal(): number {
-    const subTotal = this.ecommerce.getCartTotal() - this.applyPromo();
-    this.checkoutForm.patchValue({ subTotal: format(subTotal) });
-    return subTotal;
+  getCartSubTotal(): Observable<number> {
+    return this.ecommerce.getCartTotal().pipe(
+      map(total => total - this.applyPromo()),
+      tap(subTotal => this.checkoutForm.patchValue({ subTotal: format(subTotal) }))
+    );
   }
 
-  getTaxAmount(): number {
-    const tax = this.getCartSubTotal() * 0.10; 
-    this.checkoutForm.patchValue({ tax: format(tax) });
-    return tax;
+  getTaxAmount(): Observable<number> {
+    return this.getCartSubTotal().pipe(
+      map(subTotal => subTotal * 0.10),
+      tap(tax => this.checkoutForm.patchValue({ tax: format(tax) }))
+    );
   }
 
-  getCartTotal(): number {
-    return this.getCartSubTotal() + this.selectedPaymentPrice;
+  getCartTotal(): Observable<number> {
+    return this.getCartSubTotal().pipe(
+      map(subTotal => subTotal + this.selectedPaymentPrice)
+    );
   }
 
-  getTotalWithTax(): number {
-    const totalWithTax = this.getCartTotal() + this.getTaxAmount();
-    this.checkoutForm.patchValue({ total: format(totalWithTax) });
-    return totalWithTax;
+  getTotalWithTax(): Observable<number> {
+    return combineLatest([this.getCartTotal(), this.getTaxAmount()]).pipe(
+      map(([total, tax]) => total + tax),
+      tap(totalWithTax => this.checkoutForm.patchValue({ total: format(totalWithTax) }))
+    );
   }
 
   onSubmit() {

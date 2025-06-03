@@ -9,6 +9,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { NoItemsComponent } from './components/no-items/no-items.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { CartStore } from './store/cart.store';
+import { WishlistStore } from './store/wishlist.store';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { FooterComponent } from './components/footer/footer.component';
     ReactiveFormsModule
   ],
   providers: [
-
+    CartStore,
+    WishlistStore
   ],
   bootstrap: [AppComponent]
 })

@@ -1,65 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { Product } from '../model/productInterface';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-view-cart',
   templateUrl: './view-cart.component.html',
   styleUrls: ['./view-cart.component.css']
 })
-export class ViewCartComponent implements OnInit {
-
-  products?: Product[];
-  loader = false;
+export class ViewCartComponent implements OnInit, OnDestroy {
+  products$: Observable<Product[]>;
+  cartTotal$: Observable<number>;
+  taxAmount$: Observable<number>;
+  totalWithTax$: Observable<number>;
   message: string = 'Your shopping cart is currently empty.';
+  private destroy$ = new Subject<void>();
 
-  constructor(private ecommerce: EcommerceserviceService, private router: Router) {}
+  constructor(
+    private ecommerce: EcommerceserviceService,
+    private router: Router
+  ) {
+    this.products$ = this.ecommerce.getCartItems();
+    this.cartTotal$ = this.ecommerce.getCartTotal();
+    this.taxAmount$ = this.ecommerce.getTaxAmount();
+    this.totalWithTax$ = this.ecommerce.getTotalWithTax();
+  }
   
-  ngOnInit(): void {
-    this.loadCart();
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  public loadCart() {
-    this.loader = true;
-    this.products = this.ecommerce.getCartItems();
-    this.getCartTotal();
-  }
-
-  removeItem(itemNumber: number) {
+  removeItem(itemNumber: number): void {
     this.ecommerce.removeFromCart(itemNumber);
-    this.loadCart();
   }
 
-  increaseQuantity(productId: number) {
+  increaseQuantity(productId: number): void {
     this.ecommerce.increaseQuantity(productId);
-    this.loadCart();
   }
 
-  decreaseQuantity(productId: number) {
+  decreaseQuantity(productId: number): void {
     this.ecommerce.decreaseQuantity(productId);
-    this.loadCart();
   }
 
-  getCartTotal(): number {
-    return this.ecommerce.getCartTotal();
+  clearCart(): void {
+    this.ecommerce.clearCart();
   }
 
-  getTaxAmount(): number {
-    return this.ecommerce.getTaxAmount();
-  }
-
-  getTotalWithTax(): number {
-    return this.ecommerce.getTotalWithTax();
-  }
-
-  clearCart() {
-    this.products = [];
-    sessionStorage.clear();
-  }
-
-  navigateToCheckout() {
+  navigateToCheckout(): void {
     this.router.navigateByUrl('/checkout');
   }
-
 }

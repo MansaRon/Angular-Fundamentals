@@ -3,21 +3,18 @@ import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../model/productInterface';
 import { map, shareReplay } from 'rxjs';
+import { CartService } from './cart.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EcommerceserviceService {
-
-  private cart: Product[] = [];
   url = 'https://fakestoreapi.com/products';
 
-  constructor(private http: HttpClient) { 
-    const savedCart = sessionStorage.getItem('cart');
-    if (savedCart) {
-      this.cart = JSON.parse(savedCart); // Load from localStorage
-    }
-  }
+  constructor(
+    private http: HttpClient,
+    private cartService: CartService
+  ) {}
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.url)
@@ -26,78 +23,45 @@ export class EcommerceserviceService {
     );
   }
 
-  getSingleProduct(params: number): Observable<Product>{
+  getSingleProduct(params: number): Observable<Product> {
     return this.http.get<Product>(`https://fakestoreapi.com/products/${params}`);
   }
 
   addToCart(product: Product) {
-    const existingProduct = this.cart.find(p => p.id === product.id);
-    if (existingProduct) {
-      existingProduct.quantity += product.quantity;
-    } else {
-      this.cart.push(product);
-    }
-    this.saveCart();
+    this.cartService.addToCart(product);
   }
 
-  getCartItems(): Product[] {
-    const savedCart = sessionStorage.getItem('cart');
-    if (savedCart) { 
-      this.cart = JSON.parse(savedCart) as Product[];
-    } else {
-      this.cart = [];
-    }
-    return this.cart;
-  }
-
-  private saveCart() {
-    sessionStorage.setItem('cart', JSON.stringify(this.cart));
+  getCartItems(): Observable<Product[]> {
+    return this.cartService.getProductsInCart();
   }
 
   removeFromCart(productId: number) {
-    const savedCart = sessionStorage.getItem('cart');
-  
-    if (savedCart) {
-      this.cart = JSON.parse(savedCart);
-    }
-
-    const index = this.cart.findIndex(product => product.id === productId);
-    if (index !== -1) {
-      this.cart.splice(index, 1);
-      this.saveCart();
-    }
+    this.cartService.removeFromCart(productId);
   }
 
   increaseQuantity(productId: number) {
-    const product = this.cart.find(p => p.id === productId);
-    if (product) {
-      product.quantity++;
-      this.saveCart();
-    }
+    this.cartService.increaseQuantity(productId);
   }
   
   decreaseQuantity(productId: number) {
-    const product = this.cart.find(p => p.id === productId);
-    if (product && product.quantity > 1) {
-      product.quantity--;
-      this.saveCart();
-    }
+    this.cartService.decreaseQuantity(productId);
   }
 
-  getCartTotal(): number {
-    if (this.cart.length === 0) return 0; // Handle empty cart case
-    return this.getCartItems().reduce((total, product) => total + product.price * product.quantity, 0);
+  getCartTotal(): Observable<number> {
+    return this.cartService.getCartTotal();
   }    
 
-  getTaxAmount(): number {
-    return this.getCartTotal() * 0.10;
+  getTaxAmount(): Observable<number> {
+    return this.cartService.getTaxAmount();
   }
 
-  getTotalWithTax(): number {
-    const cartTotal = this.getCartTotal();
-    const tax = this.getTaxAmount();
-    return cartTotal + tax;
+  getTotalWithTax(): Observable<number> {
+    return this.cartService.getTotalWithTax();
   }  
+
+  clearCart(): void {
+    this.cartService.clearCart();
+  }
 
   sortProducts(products: Product[], sortType: string): Product[] {
     switch (sortType) {
@@ -117,5 +81,4 @@ export class EcommerceserviceService {
         return products;
     }
   }
-  
 }

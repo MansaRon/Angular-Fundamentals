@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../model/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
-import { BehaviorSubject, combineLatest, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -9,54 +9,58 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css'],
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit, OnDestroy {
   showModal: boolean = false;
   selectedProduct!: Product;
-  loader = false;
-  productsInCart?: Product[] = [];
   isCartModalOpen = false; 
   filterText: string = '';
   products$!: Observable<Product[]>;
+  productsInCart$: Observable<Product[]>;
   private sort$ = new BehaviorSubject<string>('price-asc');
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private ecommerce: EcommerceserviceService) {}
+    private ecommerce: EcommerceserviceService
+  ) {
+    this.productsInCart$ = this.ecommerce.getCartItems();
+  }
   
   ngOnInit(): void {
     const rawProducts$ = this.ecommerce.getProducts();
     this.products$ = combineLatest([rawProducts$, this.sort$])
     .pipe(
       map(([products, sortType]) => this.ecommerce.sortProducts(products, sortType)),
-      tap(() => (this.loader = true))
+      takeUntil(this.destroy$)
     );
-    const storedCart = sessionStorage.getItem('cart');
-    if (storedCart) {
-      this.productsInCart = JSON.parse(storedCart) as Product[];
-    }
   }
 
-  toggleModal() {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  toggleModal(): void {
     this.showModal = !this.showModal;
   }
 
-  openModal(product: Product) {
+  openModal(product: Product): void {
     this.selectedProduct = product;
     this.showModal = true;
   }
 
-  openViewCart() {
+  openViewCart(): void {
     this.isCartModalOpen = true;
   }
 
-  viewCartModel() {
+  viewCartModel(): void {
     this.isCartModalOpen = !this.isCartModalOpen;
   }
 
-  onSearchTextChanged(searchText: string) {
+  onSearchTextChanged(searchText: string): void {
     this.filterText = searchText;
   }
 
-  onSortSelected(sortString: string) {
+  onSortSelected(sortString: string): void {
     this.sort$.next(sortString);
   }
 }

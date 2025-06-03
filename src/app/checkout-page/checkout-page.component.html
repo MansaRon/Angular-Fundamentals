@@ -215,33 +215,28 @@
         </div>
     
         <div class="mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md">
-            <div class="flow-root">
-              <div class="-my-3 divide-y divide-gray-200 dark:divide-gray-800">
-                <dl class="flex items-center justify-between gap-4 py-3">
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <dl class="flex items-center justify-between gap-4">
                   <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Subtotal</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{getCartSubTotal() | currency}}</dd>
+                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{ getCartSubTotal() | async | currency }}</dd>
                 </dl>
-    
-                <dl class="flex items-center justify-between gap-4 py-3">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Savings</dt>
-                  <dd class="text-base font-medium text-green-500">{{applyPromo() | currency}}</dd>
-                </dl>
-    
-                <dl class="flex items-center justify-between gap-4 py-3">
+
+                <dl class="flex items-center justify-between gap-4">
                   <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Tax</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{getTaxAmount() | currency}}</dd>
+                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{ getTaxAmount() | async | currency }}</dd>
                 </dl>
-  
-                <dl class="flex items-center justify-between gap-4 py-3">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Delivery Amount</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{ selectedPaymentPrice | currency}}</dd>
-                </dl>
-    
-                <dl class="flex items-center justify-between gap-4 py-3">
-                  <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
-                  <dd class="text-base font-bold text-gray-900 dark:text-white">{{getTotalWithTax() | currency}}</dd>
+
+                <dl class="flex items-center justify-between gap-4">
+                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Delivery</dt>
+                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{ selectedPaymentPrice | currency }}</dd>
                 </dl>
               </div>
+
+              <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
+                <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+                <dd class="text-base font-bold text-gray-900 dark:text-white">{{ getTotalWithTax() | async | currency }}</dd>
+              </dl>
             </div>
     
             <div class="space-y-3">

@@ -9,7 +9,6 @@ import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { OtpComponent } from 'src/app/otp/otp.component';
 import { ResetPasswordComponent } from 'src/app/reset-password/reset-password.component';
 import { NavigationBarComponent } from 'src/app/components/navigation-bar/navigation-bar.component';
-import { CartStore } from 'src/app/store/cart.store';
 
 @NgModule({
   declarations: [
@@ -34,6 +33,6 @@ import { CartStore } from 'src/app/store/cart.store';
     FooterComponent,
     NavigationBarComponent,
   ],
-  providers: [CartStore]
+  providers: []
 })
 export class SharedModuleSharedModule { }

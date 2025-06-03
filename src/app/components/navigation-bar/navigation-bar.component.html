@@ -10,8 +10,8 @@
         </div>
         <div (click)="viewItemsInCart()" class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <div class="t-0 left-3">
-            <p *ngIf="productsInCart?.length !== 0" class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white">
-              {{ productsInCart?.length }}
+            <p *ngIf="(productsInCart$ | async)?.length" class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white">
+              {{ (productsInCart$ | async)?.length }}
             </p>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="file: mt-4 h-6 w-6 text-white group-hover:text-red-500 transition-colors">
@@ -21,8 +21,8 @@
 
         <div (click)="viewWishList()" class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
           <div class="t-0 left-3">
-            <p *ngIf="wishListItems?.length !== 0" class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white">
-              {{ wishListItems?.length }}
+            <p *ngIf="(wishListItems$ | async)?.length" class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white">
+              {{ (wishListItems$ | async)?.length }}
             </p>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="float-end mt-4 w-6 h-6 text-white group-hover:text-red-500 transition-colors duration-300">
