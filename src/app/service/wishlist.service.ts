@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WishlistStore } from '../store/wishlist.store';
 import { Product } from '../model/productInterface';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,15 @@ export class WishlistService {
   constructor(private wishlistStore: WishlistStore) {}
 
   getWishlistItems(): Observable<Product[]> {
-    return this.wishlistStore.items$;
+    return this.wishlistStore.vm$.pipe(
+      map(vm => vm.items)
+    );
   }
 
   getWishlistCount(): Observable<number> {
-    return this.wishlistStore.itemCount$;
+    return this.wishlistStore.vm$.pipe(
+      map(v => v.itemCount)
+    );
   }
 
   addToWishlist(product: Product): void {

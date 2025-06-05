@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CartStore } from '../store/cart.store';
 import { Product } from '../model/productInterface';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,21 +15,28 @@ export class CartService {
   }
 
   getProductsInCart(): Observable<Product[]> {
-    return this.cartStore.productsInCart$.pipe(
-      tap(products => this.saveCart(products))
+    return this.cartStore.vm$.pipe(
+      tap(vm => this.saveCart(vm.productsInCart))
+      ,map(vm => vm.productsInCart)
     );
   }
 
   getCartTotal(): Observable<number> {
-    return this.cartStore.cartTotal$;
+    return this.cartStore.vm$.pipe(
+      map(vm => vm.cartTotal)
+    );
   }
 
   getTaxAmount(): Observable<number> {
-    return this.cartStore.taxAmount$;
+    return this.cartStore.vm$.pipe(
+      map(v => v.taxAmount)
+    );
   }
 
   getTotalWithTax(): Observable<number> {
-    return this.cartStore.totalWithTax$;
+    return this.cartStore.vm$.pipe(
+      map(v => v.totalWithTax)
+    );
   }
 
   addToCart(product: Product): void {

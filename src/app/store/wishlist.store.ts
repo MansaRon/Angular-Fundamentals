@@ -7,16 +7,27 @@ interface WishlistState {
   items: Product[];
 }
 
+export const initialWishlistState: WishlistState = {
+  items: []
+};
+
 @Injectable({
   providedIn: 'root'
 })
 export class WishlistStore extends ComponentStore<WishlistState> {
   constructor() {
-    super({ items: [] });
+    super(initialWishlistState);
   }
 
-  readonly items$ = this.select(state => state.items);
-  readonly itemCount$ = this.select(state => state.items.length);
+  private readonly items$ = this.select(state => state.items);
+  private readonly itemCount$ = this.select(state => state.items.length);
+
+  // VM stands for View Model
+  vm$ = this.select(
+    this.items$,
+    this.itemCount$,
+    (items, itemCount) => ({ items, itemCount })
+  );
 
   readonly addToWishlist = this.updater((state: WishlistState, item: Product) => ({
     items: [...state.items, item]

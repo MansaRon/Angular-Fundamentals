@@ -7,32 +7,42 @@ export interface CartState {
   productsInCart: Product[];
 }
 
+export const initialCartState: CartState = {
+  productsInCart: []
+};
+
 @Injectable()
 export class CartStore extends ComponentStore<CartState> {
   constructor() {
-    super({
-      productsInCart: [] // Initial cart state
-    });
+    super(initialCartState);
   }
 
   // SELECTORS
-  readonly productsInCart$ = this.select(state => state.productsInCart);
+  private readonly productsInCart$ = this.select(state => state.productsInCart);
 
-  readonly cartTotal$ = this.select(
+  private readonly cartTotal$ = this.select(
     this.productsInCart$,
     (products) => products.reduce((total, product) => total + (product.price * (product.quantity || 1)), 0)
   );
 
-  readonly taxAmount$ = this.select(
+  private readonly taxAmount$ = this.select(
     this.cartTotal$,
     (total) => total * 0.10
   );
 
-  readonly totalWithTax$ = this.select(
+  private readonly totalWithTax$ = this.select(
     this.cartTotal$,
     this.taxAmount$,
     (total, tax) => total + tax
   );
+
+  // VM (View Model) that combines the cart state
+  vm$ = this.select({
+    productsInCart: this.productsInCart$,
+    cartTotal: this.cartTotal$,
+    taxAmount: this.taxAmount$,
+    totalWithTax: this.totalWithTax$,
+  });
 
   // UPDATERS
 
