@@ -11,6 +11,8 @@ on:
       - main
       - master
       - develop
+  pull_request_target:
+    types: [closed]
 
 jobs:
   build:
@@ -97,4 +99,14 @@ jobs:
 
       # - name: Deploy to Firebase
       #   run: npx firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+    
+  delete_feature_branch:
+    if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'main') && !startsWith(github.event.pull_request.head.ref, 'master') && !startsWith(github.event.pull_request.head.ref, 'develop')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete feature branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.event.pull_request.head.ref }}
     
