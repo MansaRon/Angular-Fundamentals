@@ -17,7 +17,7 @@ export class WishlistService {
 
   getWishlistCount(): Observable<number> {
     return this.wishlistStore.vm$.pipe(
-      map(v => v.itemCount)
+      map(v => v.itemCounts)
     );
   }
 

@@ -4,6 +4,7 @@ import { WishlistService } from '../service/wishlist.service';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { Observable, Subject, timer, takeUntil } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { WishlistStore } from '../store/wishlist.store';
 
 @Component({
   selector: 'app-wishlist',
@@ -11,18 +12,17 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./wishlist.component.css']
 })
 export class WishlistComponent implements OnInit, OnDestroy {
-  wishlistItems$: Observable<Product[]>;
   showWishListNotification: boolean = false;
   showCartNotification: boolean = false;
   message: string = 'Your wishlist is currently empty.';
   private destroy$ = new Subject<void>();
+  vm$ = this.wishlistStore.vm$;
 
   constructor(
     private wishlistService: WishlistService,
-    private ecommerce: EcommerceserviceService
-  ) {
-    this.wishlistItems$ = this.wishlistService.getWishlistItems();
-  }
+    private ecommerce: EcommerceserviceService,
+    private wishlistStore: WishlistStore,
+  ) {}
 
   ngOnInit(): void {}
 

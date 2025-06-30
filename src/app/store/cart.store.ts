@@ -5,10 +5,14 @@ import { Observable, map } from 'rxjs';
 
 export interface CartState {
   productsInCart: Product[];
+  isLoading: boolean;
+  error?: string | null;
 }
 
 export const initialCartState: CartState = {
-  productsInCart: []
+  productsInCart: [],
+  isLoading: false,
+  error: null
 };
 
 @Injectable()
@@ -19,6 +23,8 @@ export class CartStore extends ComponentStore<CartState> {
 
   // SELECTORS
   private readonly productsInCart$ = this.select(state => state.productsInCart);
+  private readonly isLoading$ = this.select(state => state.isLoading);
+  private readonly error$ = this.select(state => state.error);
 
   private readonly cartTotal$ = this.select(
     this.productsInCart$,
@@ -42,6 +48,8 @@ export class CartStore extends ComponentStore<CartState> {
     cartTotal: this.cartTotal$,
     taxAmount: this.taxAmount$,
     totalWithTax: this.totalWithTax$,
+    isLoading: this.isLoading$,
+    error: this.error$
   });
 
   // UPDATERS
