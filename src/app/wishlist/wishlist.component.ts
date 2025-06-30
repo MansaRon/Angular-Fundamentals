@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../model/productInterface';
-import { WishlistService } from '../service/wishlist.service';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
-import { Observable, Subject, timer, takeUntil } from 'rxjs';
+import { Subject, timer, takeUntil } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { WishlistStore } from '../store/wishlist.store';
 
 @Component({
   selector: 'app-wishlist',
@@ -11,18 +11,16 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./wishlist.component.css']
 })
 export class WishlistComponent implements OnInit, OnDestroy {
-  wishlistItems$: Observable<Product[]>;
   showWishListNotification: boolean = false;
   showCartNotification: boolean = false;
   message: string = 'Your wishlist is currently empty.';
   private destroy$ = new Subject<void>();
+  vm$ = this.wishlistStore.vm$;
 
   constructor(
-    private wishlistService: WishlistService,
-    private ecommerce: EcommerceserviceService
-  ) {
-    this.wishlistItems$ = this.wishlistService.getWishlistItems();
-  }
+    private ecommerce: EcommerceserviceService,
+    private wishlistStore: WishlistStore,
+  ) {}
 
   ngOnInit(): void {}
 
@@ -32,7 +30,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
   }
 
   removeItem(item: Product): void {
-    this.wishlistService.removeFromWishlist(item.id);
+    this.wishlistStore.removeFromWishlist(item.id);
     this.showWishListNotification = true;
     timer(3000).pipe(
       takeUntil(this.destroy$),

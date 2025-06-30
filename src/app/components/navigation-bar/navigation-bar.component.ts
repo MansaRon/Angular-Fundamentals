@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { EcommerceserviceService } from '../../service/ecommerceservice.service';
 import { WishlistService } from '../../service/wishlist.service';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { Product } from 'src/app/model/productInterface';
 
 @Component({
   selector: 'app-navigation-bar',
@@ -10,7 +11,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
   styleUrls: ['./navigation-bar.component.css']
 })
 export class NavigationBarComponent implements OnInit, OnDestroy {
-  productsInCart$: Observable<any[]>;
+  productsInCart$: Observable<Product[]>;
   wishListItems$: Observable<any[]>;
   private destroy$ = new Subject<void>();
 

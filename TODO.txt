@@ -3,9 +3,11 @@ Have utils class
 User reviews and ratings display
 Integration of a payment gateway
 Create mock data for the objects
-Implement formgroup controls for signup, login, forgot password and checkout process
+Implement formgroup controls for signup (done), login (done), forgot password and checkout process
 Add Pagination
 Reference image for project restructure
 Unit tests
+Fix wishlist empty screen to be like empty cart screen (possibly make it a shared component)
+Add lint for commits to remove unused imports, and formats the code as well.
 
 
