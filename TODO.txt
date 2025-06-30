@@ -8,5 +8,6 @@ Add Pagination
 Reference image for project restructure
 Unit tests
 Fix wishlist empty screen to be like empty cart screen (possibly make it a shared component)
+Add lint for commits to remove unused imports, and formats the code as well.
 
 

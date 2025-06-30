@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../model/productInterface';
-import { WishlistService } from '../service/wishlist.service';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
-import { Observable, Subject, timer, takeUntil } from 'rxjs';
+import { Subject, timer, takeUntil } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { WishlistStore } from '../store/wishlist.store';
 
@@ -19,7 +18,6 @@ export class WishlistComponent implements OnInit, OnDestroy {
   vm$ = this.wishlistStore.vm$;
 
   constructor(
-    private wishlistService: WishlistService,
     private ecommerce: EcommerceserviceService,
     private wishlistStore: WishlistStore,
   ) {}
@@ -32,7 +30,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
   }
 
   removeItem(item: Product): void {
-    this.wishlistService.removeFromWishlist(item.id);
+    this.wishlistStore.removeFromWishlist(item.id);
     this.showWishListNotification = true;
     timer(3000).pipe(
       takeUntil(this.destroy$),
