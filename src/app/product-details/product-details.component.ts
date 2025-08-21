@@ -1,40 +1,35 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../model/productInterface';
-import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { WishlistService } from '../service/wishlist.service';
-import { BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
+import { ProductDetailsStore } from '../store/product-details.store';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css'],
+  providers: [ProductDetailsStore],
 })
 export class ProductDetailsComponent implements OnInit, OnDestroy {
   showModal: boolean = false;
   selectedProduct!: Product;
-  isCartModalOpen = false; 
-  filterText: string = '';
-  products$!: Observable<Product[]>;
-  productsInCart$: Observable<Product[]>;
-  private sort$ = new BehaviorSubject<string>('price-asc');
+  isCartModalOpen = false;
+
+  // Store observables
+  vm$ = this.productDetailsStore.vm$;
+
   private destroy$ = new Subject<void>();
 
   constructor(
-    private ecommerce: EcommerceserviceService,
     private wishlistService: WishlistService,
-    private router: Router
-  ) {
-    this.productsInCart$ = this.ecommerce.getCartItems();
-  }
-  
+    private router: Router,
+    public productDetailsStore: ProductDetailsStore,
+  ) {}
+
   ngOnInit(): void {
-    const rawProducts$ = this.ecommerce.getProducts();
-    this.products$ = combineLatest([rawProducts$, this.sort$])
-    .pipe(
-      map(([products, sortType]) => this.ecommerce.sortProducts(products, sortType)),
-      takeUntil(this.destroy$)
-    );
+    // Initialize the store to load products
+    this.productDetailsStore.initialize();
   }
 
   ngOnDestroy(): void {
@@ -60,23 +55,24 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   onSearchTextChanged(searchText: string): void {
-    this.filterText = searchText;
+    this.productDetailsStore.updateFilterText(searchText);
   }
 
   onSortSelected(sortString: string): void {
-    this.sort$.next(sortString);
+    this.productDetailsStore.updateSortType(sortString);
   }
 
   toggleWishlist(product: Product): void {
-    this.wishlistService.isInWishlist(product.id).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(isInWishlist => {
-      if (isInWishlist) {
-        this.wishlistService.removeFromWishlist(product.id);
-      } else {
-        this.wishlistService.addToWishlist(product);
-      }
-    });
+    this.wishlistService
+      .isInWishlist(product.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isInWishlist) => {
+        if (isInWishlist) {
+          this.wishlistService.removeFromWishlist(product.id);
+        } else {
+          this.wishlistService.addToWishlist(product);
+        }
+      });
   }
 
   isInWishlist(productId: number): Observable<boolean> {

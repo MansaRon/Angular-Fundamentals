@@ -1,64 +1,114 @@
 <ng-template #mainScreen>
   <app-loader></app-loader>
 </ng-template>
-  
-<ng-container *ngIf="products$ | async as products">
-  <div class="bg-white">
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
-      <div class="flex items-center space-x-4">
-        <div class="w-4/5">
-          <app-search-bar (searchFilterOutput)="onSearchTextChanged($event)"></app-search-bar>
-        </div>
-        <div class="w-1/5">
-          <app-sort (sortSelected)="onSortSelected($event)"></app-sort>
-        </div>
-      </div>        
 
-      <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-        <a *ngFor="let product of products | searchPipe: filterText" class="border border-gray-300 rounded-lg p-4 shadow-md">
-          <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg xl:aspect-h-8 xl:aspect-w-7">
-            <img src="{{product.image}}" 
-              alt="{{product.description}}" 
-              class="scale-75 h-full w-full object-cover object-center group-hover:opacity-75">
-          </div>
-          <div class="flex justify-between items-center">
-            <a 
-              (click)="openModal(product)"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">
-              {{product.title}}
-            </a>
-            <button 
-              (click)="toggleWishlist(product)"
-              class="text-gray-500 hover:text-red-500 focus:outline-none">
-              <svg *ngIf="!(isInWishlist(product.id) | async)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-              </svg>
-              <svg *ngIf="isInWishlist(product.id) | async" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6 text-red-500">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
-            </button>
-          </div>
-          <h3 class="text-sm text-gray-700">
-            <a>
-              <span aria-hidden="true" class="absolute"></span>
-                {{product.rating.rate}}
-            </a>
-          </h3>
-          <p class="mt-1 text-lg font-medium text-gray-900">
-            {{product.price | currency: "USD"}}
-          </p>
-          <button type="button" 
-            [routerLink]="['/product-shop', product.id]" 
-            class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-            Purchase
-          </button>
-          <app-purchase-modal
-            [productChild]="selectedProduct" 
-            [isModalVisible]="showModal"
-            (closeModal)="toggleModal()">
-          </app-purchase-modal>
-        </a>
-      </div>
+<ng-container *ngIf="vm$ | async as vm; else mainScreen">
+  <div *ngIf="vm.error; else contentScreen" class="flex items-center justify-center min-h-screen">
+    <div class="text-center">
+      <div class="text-red-500 text-6xl mb-4">⚠️</div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
+      <p class="text-gray-600 mb-4">{{ vm.error }}</p>
+      <button
+        (click)="productDetailsStore.initialize()"
+        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-500"
+      >
+        Try Again
+      </button>
     </div>
   </div>
+
+  <ng-template #contentScreen>
+    <div class="bg-white">
+      <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div class="flex items-center space-x-4">
+          <div class="w-4/5">
+            <app-search-bar (searchFilterOutput)="onSearchTextChanged($event)"></app-search-bar>
+          </div>
+          <div class="w-1/5">
+            <app-sort (sortSelected)="onSortSelected($event)"></app-sort>
+          </div>
+        </div>
+
+        <div
+          class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"
+        >
+          <a
+            *ngFor="let product of vm.products"
+            class="border border-gray-300 rounded-lg p-4 shadow-md"
+          >
+            <div
+              class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg xl:aspect-h-8 xl:aspect-w-7"
+            >
+              <img
+                src="{{ product.image }}"
+                alt="{{ product.description }}"
+                class="scale-75 h-full w-full object-cover object-center group-hover:opacity-75"
+              />
+            </div>
+            <div class="flex justify-between items-center">
+              <a
+                (click)="openModal(product)"
+                class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
+              >
+                {{ product.title }}
+              </a>
+              <button
+                (click)="toggleWishlist(product)"
+                class="text-gray-500 hover:text-red-500 focus:outline-none"
+              >
+                <svg
+                  *ngIf="!(isInWishlist(product.id) | async)"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                  />
+                </svg>
+                <svg
+                  *ngIf="isInWishlist(product.id) | async"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  class="w-6 h-6 text-red-500"
+                >
+                  <path
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <h3 class="text-sm text-gray-700">
+              <a>
+                <span aria-hidden="true" class="absolute"></span>
+                {{ product.rating.rate }}
+              </a>
+            </h3>
+            <p class="mt-1 text-lg font-medium text-gray-900">
+              {{ product.price | currency: 'USD' }}
+            </p>
+            <button
+              type="button"
+              [routerLink]="['/product-shop', product.id]"
+              class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Purchase
+            </button>
+            <app-purchase-modal
+              [productChild]="selectedProduct"
+              [isModalVisible]="showModal"
+              (closeModal)="toggleModal()"
+            >
+            </app-purchase-modal>
+          </a>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </ng-container>

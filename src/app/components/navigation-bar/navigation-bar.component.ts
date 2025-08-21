@@ -2,23 +2,23 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { EcommerceserviceService } from '../../service/ecommerceservice.service';
 import { WishlistService } from '../../service/wishlist.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Product } from 'src/app/model/productInterface';
 
 @Component({
   selector: 'app-navigation-bar',
   templateUrl: './navigation-bar.component.html',
-  styleUrls: ['./navigation-bar.component.css']
+  styleUrls: ['./navigation-bar.component.css'],
 })
 export class NavigationBarComponent implements OnInit, OnDestroy {
   productsInCart$: Observable<Product[]>;
-  wishListItems$: Observable<any[]>;
+  wishListItems$: Observable<Product[]>;
   private destroy$ = new Subject<void>();
 
   constructor(
     private ecommerce: EcommerceserviceService,
     private wishlistService: WishlistService,
-    private router: Router
+    private router: Router,
   ) {
     this.productsInCart$ = this.ecommerce.getCartItems();
     this.wishListItems$ = this.wishlistService.getWishlistItems();

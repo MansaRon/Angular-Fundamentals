@@ -2,12 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { Product } from '../model/productInterface';
 import { Router } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-cart',
   templateUrl: './view-cart.component.html',
-  styleUrls: ['./view-cart.component.css']
+  styleUrls: ['./view-cart.component.css'],
 })
 export class ViewCartComponent implements OnInit, OnDestroy {
   products$: Observable<Product[]>;
@@ -19,14 +19,14 @@ export class ViewCartComponent implements OnInit, OnDestroy {
 
   constructor(
     private ecommerce: EcommerceserviceService,
-    private router: Router
+    private router: Router,
   ) {
     this.products$ = this.ecommerce.getCartItems();
     this.cartTotal$ = this.ecommerce.getCartTotal();
     this.taxAmount$ = this.ecommerce.getTaxAmount();
     this.totalWithTax$ = this.ecommerce.getTotalWithTax();
   }
-  
+
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
