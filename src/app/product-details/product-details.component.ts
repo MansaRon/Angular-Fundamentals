@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../model/productInterface';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { WishlistService } from '../service/wishlist.service';
-import { BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil, take } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -13,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProductDetailsComponent implements OnInit, OnDestroy {
   showModal: boolean = false;
   selectedProduct!: Product;
-  isCartModalOpen = false; 
+  isCartModalOpen = false;
   filterText: string = '';
   products$!: Observable<Product[]>;
   productsInCart$: Observable<Product[]>;
@@ -23,17 +22,15 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private ecommerce: EcommerceserviceService,
     private wishlistService: WishlistService,
-    private router: Router
   ) {
     this.productsInCart$ = this.ecommerce.getCartItems();
   }
-  
+
   ngOnInit(): void {
     const rawProducts$ = this.ecommerce.getProducts();
-    this.products$ = combineLatest([rawProducts$, this.sort$])
-    .pipe(
+    this.products$ = combineLatest([rawProducts$, this.sort$]).pipe(
       map(([products, sortType]) => this.ecommerce.sortProducts(products, sortType)),
-      takeUntil(this.destroy$)
+      takeUntil(this.destroy$),
     );
   }
 
@@ -68,15 +65,15 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   toggleWishlist(product: Product): void {
-    this.wishlistService.isInWishlist(product.id).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(isInWishlist => {
-      if (isInWishlist) {
-        this.wishlistService.removeFromWishlist(product.id);
-      } else {
-        this.wishlistService.addToWishlist(product);
-      }
-    });
+    this.isInWishlist(product.id)
+      .pipe(take(1))
+      .subscribe((isInWishlist) => {
+        if (isInWishlist) {
+          this.wishlistService.removeFromWishlist(product.id);
+        } else {
+          this.wishlistService.addToWishlist(product);
+        }
+      });
   }
 
   isInWishlist(productId: number): Observable<boolean> {
