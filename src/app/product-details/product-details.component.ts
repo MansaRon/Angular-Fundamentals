@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../model/productInterface';
 import { WishlistService } from '../service/wishlist.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
+import { Observable, Subject, take } from 'rxjs';
 import { ProductDetailsStore } from '../store/product-details.store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-details',
@@ -63,9 +63,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   toggleWishlist(product: Product): void {
-    this.wishlistService
-      .isInWishlist(product.id)
-      .pipe(takeUntil(this.destroy$))
+    this.isInWishlist(product.id)
+      .pipe(take(1))
       .subscribe((isInWishlist) => {
         if (isInWishlist) {
           this.wishlistService.removeFromWishlist(product.id);
