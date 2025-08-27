@@ -2,25 +2,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../model/productInterface';
-import { map, shareReplay } from 'rxjs';
+import { shareReplay } from 'rxjs';
 import { CartService } from './cart.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EcommerceserviceService {
   url = 'https://fakestoreapi.com/products';
 
   constructor(
     private http: HttpClient,
-    private cartService: CartService
+    private cartService: CartService,
   ) {}
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.url)
-    .pipe(
-      shareReplay(),
-    );
+    return this.http.get<Product[]>(this.url).pipe(shareReplay());
   }
 
   getSingleProduct(params: number): Observable<Product> {
@@ -42,14 +39,14 @@ export class EcommerceserviceService {
   increaseQuantity(productId: number) {
     this.cartService.increaseQuantity(productId);
   }
-  
+
   decreaseQuantity(productId: number) {
     this.cartService.decreaseQuantity(productId);
   }
 
   getCartTotal(): Observable<number> {
     return this.cartService.getCartTotal();
-  }    
+  }
 
   getTaxAmount(): Observable<number> {
     return this.cartService.getTaxAmount();
@@ -57,7 +54,7 @@ export class EcommerceserviceService {
 
   getTotalWithTax(): Observable<number> {
     return this.cartService.getTotalWithTax();
-  }  
+  }
 
   clearCart(): void {
     this.cartService.clearCart();

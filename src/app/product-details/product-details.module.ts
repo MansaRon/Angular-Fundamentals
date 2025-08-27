@@ -8,14 +8,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ViewCartComponent } from '../components/view-cart-modal/view-cart.component';
 import { SearchBarComponent } from '../components/search-bar/search-bar.component';
 import { FormsModule } from '@angular/forms';
-import { NavigationBarComponent } from '../components/navigation-bar/navigation-bar.component';
 import { SearchPipePipe } from '../pipes/search-pipe.pipe';
 import { SortComponent } from '../components/sort/sort.component';
 import { LoggingInterceptor } from '../interceptor/logging.interceptor';
 import { ErrorInterceptor } from '../interceptor/error.interceptor';
 import { SharedModuleSharedModule } from '../shared/shared/shared.module';
 import { CoreInterceptor } from '../interceptor/core.interceptor';
-
 
 @NgModule({
   declarations: [
@@ -26,28 +24,23 @@ import { CoreInterceptor } from '../interceptor/core.interceptor';
     SearchPipePipe,
     SortComponent,
   ],
-  imports: [
-    CommonModule,
-    ProductDetailsRoutingModule,
-    FormsModule,
-    SharedModuleSharedModule
-  ],
+  imports: [CommonModule, ProductDetailsRoutingModule, FormsModule, SharedModuleSharedModule],
   providers: [
     {
-      provide: HTTP_INTERCEPTORS, 
-      useClass: LoggingInterceptor, 
-      multi: true
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoggingInterceptor,
+      multi: true,
     },
     {
-      provide: HTTP_INTERCEPTORS, 
-      useClass: ErrorInterceptor, 
-      multi: true
-    }, 
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CoreInterceptor,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
-export class ProductDetailsModule { }
+export class ProductDetailsModule {}

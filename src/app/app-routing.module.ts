@@ -2,82 +2,71 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductResolverService } from './service/productresolver.service';
 import { ProductdetailResolverService } from './service/productdetailresolver.service';
-import { AuthguardGuard } from './guards/authguard.guard';
 import { OtpComponent } from './otp/otp.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
-  { 
-    path: '', 
-    redirectTo: '/product-details', 
-    pathMatch: 'full' 
+  {
+    path: '',
+    redirectTo: '/product-details',
+    pathMatch: 'full',
   },
-  { 
-    path: 'product-details', 
-    loadChildren: () => import('./product-details/product-details.module')
-    .then(m => m.ProductDetailsModule),
-    resolve: { details: ProductdetailResolverService } 
-  }, 
-  { 
-    path: 'product-shop/:productId', 
-    loadChildren: () => import('./product-shop/product-shop.module')
-    .then(m => m.ProductShopModule),
-    resolve: { product: ProductResolverService }, 
+  {
+    path: 'product-details',
+    loadChildren: () =>
+      import('./product-details/product-details.module').then((m) => m.ProductDetailsModule),
+    resolve: { details: ProductdetailResolverService },
   },
-  { 
-    path: 'home', 
-    loadChildren: () => import('./landing-page/landing-page.module')
-    .then(m => m.LandingPageModule) 
+  {
+    path: 'product-shop/:productId',
+    loadChildren: () =>
+      import('./product-shop/product-shop.module').then((m) => m.ProductShopModule),
+    resolve: { product: ProductResolverService },
   },
-  { 
-    path: 'view-cart', 
-    loadChildren: () => import('./view-cart/view-cart.module')
-    .then(m => m.ViewCartModule) 
+  {
+    path: 'view-cart',
+    loadChildren: () => import('./view-cart/view-cart.module').then((m) => m.ViewCartModule),
   },
-  { 
-    path: 'checkout', 
-    loadChildren: () => import('./checkout-page/checkout-page.module')
-    .then(m => m.CheckoutPageModule),
+  {
+    path: 'checkout',
+    loadChildren: () =>
+      import('./checkout-page/checkout-page.module').then((m) => m.CheckoutPageModule),
     //canActivate: [AuthguardGuard]
   },
-  { 
-    path: 'thank-you', 
-    loadChildren: () => import('./thank-you/thank-you.module')
-    .then(m => m.ThankYouModule),
+  {
+    path: 'thank-you',
+    loadChildren: () => import('./thank-you/thank-you.module').then((m) => m.ThankYouModule),
     //canActivate: [AuthguardGuard]
   },
-  { 
-    path: 'register', 
-    loadChildren: () => import('./register/register.module')
-    .then(m => m.RegisterModule) 
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then((m) => m.RegisterModule),
   },
-  { 
-    path: 'login', 
-    loadChildren: () => import('./login/login.module')
-    .then(m => m.LoginModule) 
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then((m) => m.LoginModule),
   },
   {
     path: 'otp',
-    component: OtpComponent
+    component: OtpComponent,
   },
   {
     path: 'reset-password',
-    component: ResetPasswordComponent
+    component: ResetPasswordComponent,
   },
-  { 
-    path: 'wishlist', 
-    loadChildren: () => import('./wishlist/wishlist.module')
-    .then(m => m.WishlistModule) 
+  {
+    path: 'wishlist',
+    loadChildren: () => import('./wishlist/wishlist.module').then((m) => m.WishlistModule),
   },
-  { 
-    path: '**', 
-    loadChildren: () => import('./page-not-found/page-not-found.module')
-    .then(m => m.PageNotFoundModule) 
-  }
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./page-not-found/page-not-found.module').then((m) => m.PageNotFoundModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { Product } from '../model/productInterface';
-import { Observable, map } from 'rxjs';
 
 export interface CartState {
   productsInCart: Product[];
@@ -12,7 +11,7 @@ export interface CartState {
 export const initialCartState: CartState = {
   productsInCart: [],
   isLoading: false,
-  error: null
+  error: null,
 };
 
 @Injectable()
@@ -22,24 +21,20 @@ export class CartStore extends ComponentStore<CartState> {
   }
 
   // SELECTORS
-  private readonly productsInCart$ = this.select(state => state.productsInCart);
-  private readonly isLoading$ = this.select(state => state.isLoading);
-  private readonly error$ = this.select(state => state.error);
+  private readonly productsInCart$ = this.select((state) => state.productsInCart);
+  private readonly isLoading$ = this.select((state) => state.isLoading);
+  private readonly error$ = this.select((state) => state.error);
 
-  private readonly cartTotal$ = this.select(
-    this.productsInCart$,
-    (products) => products.reduce((total, product) => total + (product.price * (product.quantity || 1)), 0)
+  private readonly cartTotal$ = this.select(this.productsInCart$, (products) =>
+    products.reduce((total, product) => total + product.price * (product.quantity || 1), 0),
   );
 
-  private readonly taxAmount$ = this.select(
-    this.cartTotal$,
-    (total) => total * 0.10
-  );
+  private readonly taxAmount$ = this.select(this.cartTotal$, (total) => total * 0.1);
 
   private readonly totalWithTax$ = this.select(
     this.cartTotal$,
     this.taxAmount$,
-    (total, tax) => total + tax
+    (total, tax) => total + tax,
   );
 
   // VM (View Model) that combines the cart state
@@ -49,77 +44,66 @@ export class CartStore extends ComponentStore<CartState> {
     taxAmount: this.taxAmount$,
     totalWithTax: this.totalWithTax$,
     isLoading: this.isLoading$,
-    error: this.error$
+    error: this.error$,
   });
 
   // UPDATERS
 
   // Replace the entire cart
-  readonly setProductsInCart = this.updater<Product[]>(
-    (state, products) => ({ ...state, productsInCart: products })
-  );
+  readonly setProductsInCart = this.updater<Product[]>((state, products) => ({
+    ...state,
+    productsInCart: products,
+  }));
 
   // Add a product to the cart
-  readonly addToCart = this.updater<Product>(
-    (state, product) => {
-      const existingProduct = state.productsInCart.find(p => p.id === product.id);
-      if (existingProduct) {
-        return {
-          ...state,
-          productsInCart: state.productsInCart.map(p =>
-            p.id === product.id
-              ? { ...p, quantity: (p.quantity || 1) + (product.quantity || 1) }
-              : p
-          )
-        };
-      }
+  readonly addToCart = this.updater<Product>((state, product) => {
+    const existingProduct = state.productsInCart.find((p) => p.id === product.id);
+    if (existingProduct) {
       return {
         ...state,
-        productsInCart: [
-          ...state.productsInCart, 
-          { 
-            ...product, 
-            quantity: product.quantity || 1 
-          }
-        ]
+        productsInCart: state.productsInCart.map((p) =>
+          p.id === product.id ? { ...p, quantity: (p.quantity || 1) + (product.quantity || 1) } : p,
+        ),
       };
     }
-  );
+    return {
+      ...state,
+      productsInCart: [
+        ...state.productsInCart,
+        {
+          ...product,
+          quantity: product.quantity || 1,
+        },
+      ],
+    };
+  });
 
   // Remove a product by ID
-  readonly removeFromCart = this.updater<number>(
-    (state, productId) => ({
-      ...state,
-      productsInCart: state.productsInCart.filter(p => p.id !== productId)
-    })
-  );
+  readonly removeFromCart = this.updater<number>((state, productId) => ({
+    ...state,
+    productsInCart: state.productsInCart.filter((p) => p.id !== productId),
+  }));
 
   readonly updateQuantity = this.updater<{ productId: number; quantity: number }>(
     (state, { productId, quantity }) => ({
       ...state,
-      productsInCart: state.productsInCart.map(p =>
-        p.id === productId ? { ...p, quantity } : p
-      )
-    })
+      productsInCart: state.productsInCart.map((p) =>
+        p.id === productId ? { ...p, quantity } : p,
+      ),
+    }),
   );
 
-  readonly increaseQuantity = this.updater<number>(
-    (state, productId) => ({
-      ...state,
-      productsInCart: state.productsInCart.map(p =>
-        p.id === productId ? { ...p, quantity: (p.quantity || 1) + 1 } : p
-      )
-    })
-  );
+  readonly increaseQuantity = this.updater<number>((state, productId) => ({
+    ...state,
+    productsInCart: state.productsInCart.map((p) =>
+      p.id === productId ? { ...p, quantity: (p.quantity || 1) + 1 } : p,
+    ),
+  }));
 
-  readonly decreaseQuantity = this.updater<number>(
-    (state, productId) => ({
-      ...state,
-      productsInCart: state.productsInCart.map(p =>
-        p.id === productId && (p.quantity || 1) > 1
-          ? { ...p, quantity: (p.quantity || 1) - 1 }
-          : p
-      )
-    })
-  );
+  readonly decreaseQuantity = this.updater<number>((state, productId) => ({
+    ...state,
+    productsInCart: state.productsInCart.map((p) =>
+      p.id === productId && (p.quantity || 1) > 1 ? { ...p, quantity: (p.quantity || 1) - 1 } : p,
+    ),
+  }));
 }
