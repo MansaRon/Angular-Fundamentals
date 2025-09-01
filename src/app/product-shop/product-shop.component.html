@@ -4,7 +4,7 @@
       <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li class="inline-flex items-center">
           <a
-            routerLink="/product-shop"
+            routerLink="/product-details"
             class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
           >
             <svg
@@ -42,12 +42,9 @@
       </ol>
     </nav>
 
-    <!-- Main Product Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-      <!-- Left Side - Product Image -->
       <div class="space-y-6">
         <div class="relative group">
-          <!-- Main Product Image -->
           <div
             class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-700"
           >
@@ -58,7 +55,6 @@
             />
           </div>
 
-          <!-- Rating Badge -->
           <div class="absolute top-4 right-4">
             <div
               class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium text-white shadow-lg"
@@ -79,7 +75,6 @@
           </div>
         </div>
 
-        <!-- Image Gallery Placeholder (for future enhancement) -->
         <div class="grid grid-cols-4 gap-4">
           <div
             class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 dark:bg-gray-700"
@@ -120,15 +115,12 @@
         </div>
       </div>
 
-      <!-- Right Side - Product Information -->
       <div class="space-y-8">
-        <!-- Product Header -->
         <div class="space-y-4">
           <h1 class="text-3xl font-bold text-gray-900 dark:text-white leading-tight">
             {{ product?.title }}
           </h1>
 
-          <!-- Price and Rating -->
           <div class="flex items-center justify-between">
             <div class="flex items-baseline space-x-2">
               <span class="text-4xl font-bold text-gray-900 dark:text-white">
@@ -169,7 +161,6 @@
           </div>
         </div>
 
-        <!-- Product Description -->
         <div class="space-y-4">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Description</h3>
           <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-base">
@@ -177,7 +168,6 @@
           </p>
         </div>
 
-        <!-- Product Features -->
         <div class="space-y-4">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Key Features</h3>
           <ul class="space-y-2">
@@ -214,7 +204,6 @@
           </ul>
         </div>
 
-        <!-- Action Buttons -->
         <div class="space-y-4">
           <div class="flex space-x-4">
             <button
@@ -248,7 +237,6 @@
             </button>
           </div>
 
-          <!-- Continue Shopping Link -->
           <div class="text-center">
             <a
               routerLink="/product-details"
@@ -267,7 +255,6 @@
           </div>
         </div>
 
-        <!-- Additional Information -->
         <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
           <div class="grid grid-cols-2 gap-6 text-sm">
             <div>
@@ -294,7 +281,6 @@
     </div>
   </div>
 
-  <!-- Notification -->
   <div
     *ngIf="showNotification"
     class="fixed bottom-4 right-4 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 border border-gray-200 dark:border-gray-700 animate-slide-up z-50"
