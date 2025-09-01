@@ -2,3 +2,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global styles for sticky footer using Tailwind utilities */
+@layer base {
+  html,
+  body {
+    @apply h-full m-0 p-0;
+  }
+
+  body {
+    @apply min-h-screen;
+  }
+}
