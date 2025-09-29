@@ -217,6 +217,7 @@
                     }"
                     required
                     formControlName="phoneNumber"
+                    maxlength="10"
                   />
                   <div
                     *ngIf="
@@ -226,6 +227,12 @@
                     class="text-red-500 text-sm mt-1"
                   >
                     Phone number is required.
+                  </div>
+                  <div
+                    *ngIf="checkoutForm.get('phoneNumber')?.hasError('pattern')"
+                    class="text-red-500 text-sm mt-1"
+                  >
+                    Only digits are allowed.
                   </div>
                 </div>
               </div>
@@ -366,7 +373,6 @@
               maxlength="6"
             />
             <button
-              (click)="applyPromo()"
               type="button"
               [disabled]="
                 checkoutForm.get('promotionalCode')?.invalid ||
@@ -404,6 +410,15 @@
                 {{ selectedPaymentPrice | currency }}
               </dd>
             </dl>
+
+            <div *ngIf="checkoutForm.get('promotionalCode')?.value?.length === 6">
+              <dl class="flex items-center justify-between gap-4">
+                <dt class="text-base font-normal text-green-500 dark:text-gray-400">Promo</dt>
+                <dd class="text-base font-medium text-gray-900 dark:text-white">
+                  {{ getPromo() | async | currency }}
+                </dd>
+              </dl>
+            </div>
           </div>
 
           <dl
@@ -418,7 +433,6 @@
 
         <div class="space-y-3">
           <button
-            [routerLink]="['/thank-you']"
             type="submit"
             class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
           >

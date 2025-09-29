@@ -4,6 +4,7 @@ import { ProductResolverService } from './service/productresolver.service';
 import { ProductdetailResolverService } from './service/productdetailresolver.service';
 import { OtpComponent } from './otp/otp.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AuthguardGuard } from './guards/authguard.guard';
 
 const routes: Routes = [
   {
@@ -31,12 +32,12 @@ const routes: Routes = [
     path: 'checkout',
     loadChildren: () =>
       import('./checkout-page/checkout-page.module').then((m) => m.CheckoutPageModule),
-    //canActivate: [AuthguardGuard]
+    canActivate: [AuthguardGuard],
   },
   {
     path: 'thank-you',
     loadChildren: () => import('./thank-you/thank-you.module').then((m) => m.ThankYouModule),
-    //canActivate: [AuthguardGuard]
+    canActivate: [AuthguardGuard],
   },
   {
     path: 'register',

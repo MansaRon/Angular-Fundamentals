@@ -4,7 +4,7 @@ import { Product } from '../model/productInterface';
 import { map, Observable, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
   constructor(private cartStore: CartStore) {
@@ -16,27 +16,25 @@ export class CartService {
 
   getProductsInCart(): Observable<Product[]> {
     return this.cartStore.vm$.pipe(
-      tap(vm => this.saveCart(vm.productsInCart))
-      ,map(vm => vm.productsInCart)
+      tap((vm) => this.saveCart(vm.productsInCart)),
+      map((vm) => vm.productsInCart),
     );
   }
 
   getCartTotal(): Observable<number> {
-    return this.cartStore.vm$.pipe(
-      map(vm => vm.cartTotal)
-    );
+    return this.cartStore.vm$.pipe(map((vm) => vm.cartTotal));
+  }
+
+  getPromotionalDiscount(): Observable<number> {
+    return this.cartStore.vm$.pipe(map((v) => v.promotionalDiscount));
   }
 
   getTaxAmount(): Observable<number> {
-    return this.cartStore.vm$.pipe(
-      map(v => v.taxAmount)
-    );
+    return this.cartStore.vm$.pipe(map((v) => v.taxAmount));
   }
 
   getTotalWithTax(): Observable<number> {
-    return this.cartStore.vm$.pipe(
-      map(v => v.totalWithTax)
-    );
+    return this.cartStore.vm$.pipe(map((v) => v.totalWithTax));
   }
 
   addToCart(product: Product): void {
@@ -66,4 +64,4 @@ export class CartService {
   private saveCart(products: Product[]): void {
     sessionStorage.setItem('cart', JSON.stringify(products));
   }
-} 
+}

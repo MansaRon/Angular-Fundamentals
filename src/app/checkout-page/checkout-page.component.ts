@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { EcommerceserviceService } from '../service/ecommerceservice.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Country, COUNTRY_FLAGS } from '../model/country';
@@ -9,6 +8,8 @@ import { DELIVERY_OPTIONS, DeliveryMethod } from '../model/deliveryOptions';
 import { format } from '../model/numberFormat';
 import { Observable, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-checkout-page',
@@ -39,6 +40,7 @@ export class CheckoutPageComponent implements OnInit {
     deliveryAmount: new FormControl(this.selectedPaymentPrice),
     phoneNumber: new FormControl('', [
       Validators.required,
+      Validators.pattern(/^[0-9]*$/),
       Validators.maxLength(10),
       Validators.minLength(10),
     ]),
@@ -54,16 +56,15 @@ export class CheckoutPageComponent implements OnInit {
   selectedCountryFlag = this.countryFlag[0].svg;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private ecommerce: EcommerceserviceService,
-    private router: Router,
     private sanitizer: DomSanitizer,
+    private router: Router,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
     this.getCountries();
 
-    //value change of delivery options
     this.checkoutForm.get('deliveryOption')?.valueChanges.subscribe((selectedId) => {
       const selectedDelivery = this.delivery.find((option) => option.id === selectedId);
       if (selectedDelivery) {
@@ -86,7 +87,6 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   changeCountryCode(code: string) {
-    console.log(code);
     const selectedCountryCode =
       this.countryFlag.find((country) => country.code === code) || this.countryFlag[0];
     if (selectedCountryCode) {
@@ -108,14 +108,13 @@ export class CheckoutPageComponent implements OnInit {
     this.checkoutForm.patchValue({ deliveryOption: id });
   }
 
-  applyPromo() {
-    const promoControl = this.checkoutForm.get('promotionalCode');
-    return promoControl?.valid && promoControl.value?.length === 6 ? 50 : 0;
+  getPromo(): Observable<number> {
+    return this.ecommerce.getPromotionalDiscount().pipe(map((discount) => discount));
   }
 
   getCartSubTotal(): Observable<number> {
-    return this.ecommerce.getCartTotal().pipe(
-      map((total) => total - this.applyPromo()),
+    return combineLatest([this.ecommerce.getCartTotal(), this.getPromo()]).pipe(
+      map(([total, discount]) => total - discount),
       tap((subTotal) => this.checkoutForm.patchValue({ subTotal: format(subTotal) })),
     );
   }
@@ -139,6 +138,25 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.checkoutForm.value);
+    if (this.checkoutForm.invalid) {
+      this.checkoutForm.markAllAsTouched();
+      window.scroll({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/thank-you']).then(() => {
+        this.checkoutForm.reset();
+      });
+      return;
+    }
+
+    const returnUrl = '/checkout';
+    const checkoutState = this.checkoutForm.getRawValue();
+    this.ecommerce.clearCart();
+    this.router.navigate(['/login'], {
+      queryParams: { returnUrl },
+      state: { from: 'checkout', checkoutState },
+    });
   }
 }
