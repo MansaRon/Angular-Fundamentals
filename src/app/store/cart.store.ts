@@ -29,12 +29,15 @@ export class CartStore extends ComponentStore<CartState> {
     products.reduce((total, product) => total + product.price * (product.quantity || 1), 0),
   );
 
+  private readonly promotionalDiscount$ = this.select(() => 50);
+
   private readonly taxAmount$ = this.select(this.cartTotal$, (total) => total * 0.1);
 
   private readonly totalWithTax$ = this.select(
     this.cartTotal$,
     this.taxAmount$,
-    (total, tax) => total + tax,
+    this.promotionalDiscount$,
+    (total, tax, discount) => total + tax - discount,
   );
 
   // VM (View Model) that combines the cart state
@@ -42,6 +45,7 @@ export class CartStore extends ComponentStore<CartState> {
     productsInCart: this.productsInCart$,
     cartTotal: this.cartTotal$,
     taxAmount: this.taxAmount$,
+    promotionalDiscount: this.promotionalDiscount$,
     totalWithTax: this.totalWithTax$,
     isLoading: this.isLoading$,
     error: this.error$,
@@ -53,6 +57,11 @@ export class CartStore extends ComponentStore<CartState> {
   readonly setProductsInCart = this.updater<Product[]>((state, products) => ({
     ...state,
     productsInCart: products,
+  }));
+
+  readonly clearCart = this.updater((state) => ({
+    ...state,
+    productsInCart: [],
   }));
 
   // Add a product to the cart
@@ -78,7 +87,6 @@ export class CartStore extends ComponentStore<CartState> {
     };
   });
 
-  // Remove a product by ID
   readonly removeFromCart = this.updater<number>((state, productId) => ({
     ...state,
     productsInCart: state.productsInCart.filter((p) => p.id !== productId),

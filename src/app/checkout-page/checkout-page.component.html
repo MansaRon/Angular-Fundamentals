@@ -1,259 +1,474 @@
-<div class="flex items-center justify-center p-6 max-w-7xl mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-800">
-    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-      <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
-        <div class="min-w-0 flex-1 space-y-8">
-          <!-- Delivery Details -->
-            <div class="space-y-4">
-              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Delivery Details</h2>
-    
-              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label for="your_name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> First name </label>
-                  <input 
-                      type="text" 
-                      id="your_name" 
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" 
-                      placeholder="First Name" 
-                      required 
-                      formControlName="firstName"/>
-                </div>
-    
-                <div>
-                  <label for="your_surname" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Last name </label>
-                  <input 
-                      type="email" 
-                      id="your_surname" 
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" 
-                      placeholder="Last Name" 
-                      required 
-                      formControlName="lastName"/>
-                </div>
-    
-                <div>
-                  <div class="mb-2 flex items-center gap-2">
-                    <label for="select-country-input-3" class="block text-sm font-medium text-gray-900 dark:text-white"> Country* </label>
-                  </div>
-                  <select 
-                      id="select-country-input-3" 
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      formControlName="country">
-                      <option 
-                        *ngFor="let selectedCountry of countries" 
-                        [ngValue]="selectedCountry">
-                        {{ selectedCountry.name }}
-                      </option>
-                  </select>
-                </div>
-    
-                <div>
-                  <div class="mb-2 flex items-center gap-2">
-                    <label for="select-city-input-3" class="block text-sm font-medium text-gray-900 dark:text-white"> City* </label>
-                  </div>
-                  <select 
-                      id="select-city-input-3" 
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      formControlName="city">
-                      <option *ngFor="let city of cities" [value]="city">
-                        {{ city }}
-                      </option>
-                  </select>
-                </div>
-    
-                <div>
-                  <label 
-                      for="phone-input-3" 
-                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> 
-                      Phone Number* 
-                  </label>
-                  <div class="flex items-center">
-                    <!-- Country code and flag -->
-                    <button
-                      id="dropdown-phone-button"
-                      (click)="isDropdownOpen = !isDropdownOpen"
-                      class="z-10 inline-flex shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
-                      type="button"
-                      data-dropdown-toggle="dropdown-phone">
-                      <span [innerHTML]="getSafeSvg(selectedCountryFlag)" class="h-4 w-4 me-2"></span>
-                      {{ selectedCountryCode }}
-                      <svg class="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7" />
-                      </svg>
-                    </button>
-                    <!-- Country code and flag -->
-  
-                  <div 
-                    id="dropdown-phone" 
-                    class="z-10 hidden w-56 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700">
-                    <ul 
-                      class="p-2 text-sm font-medium text-gray-700 dark:text-gray-200" 
-                      aria-labelledby="dropdown-phone-button">
-                      <li *ngFor="let countryFlags of countryFlag">
-                        <button
-                          type="button"
-                          (click)="changeCountryCode(countryFlags.code)"
-                          class="inline-flex w-full rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
-                            <span [innerHTML]="getSafeSvg(countryFlags.svg)" class="me-2 h-4 w-4"></span>
-                              {{ countryFlags.name }} ({{ countryFlags.code }})
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                    <div class="relative w-full">
-                      <input 
-                          type="text" 
-                          id="phone-input" 
-                          class="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:border-s-gray-700  dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500" 
-                          required 
-                          formControlName="phoneNumber"/>
-                    </div>
-                  </div>
-                </div>
-    
-                <div>
-                  <label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Email </label>
-                  <input 
-                      type="email" 
-                      id="email" 
-                      class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500" 
-                      placeholder="Email Address" 
-                      required 
-                      formControlName="emailAddress"/>
-                </div>
-              </div>
-            </div>
-          <!-- Delivery Details -->
-  
-            <!-- Payment Section -->
-            <div class="space-y-4">
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Payment</h3>
-    
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div *ngFor="let method of payments" class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                    <div class="flex items-start">
-                      <div class="flex h-5 items-center">
-                        <!-- Bind the form control -->
-                        <input
-                          [id]="method.id"
-                          [value]="method.id"
-                          formControlName="paymentOption"
-                          type="radio"
-                          (change)="onPaymentMethodChange(method.id)" 
-                          [checked]="method.checked"
-                          class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
-                        />
-                      </div>
-                      <div class="ms-4 text-sm">
-                        <label [for]="method.id" class="font-medium leading-none text-gray-900 dark:text-white">
-                          {{ method.label }}
-                        </label>
-                        <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
-                          {{ method.description }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-  
-            </div>
-            <!-- Payment Section -->
-  
-            <!-- Delivery Methods -->
-            <div class="space-y-4">
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Delivery Methods</h3>
-    
-              <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                <div *ngFor="let deliveryOptions of delivery" class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800">
-                  <div class="flex items-start">
-                    <div class="flex h-5 items-center">
-                      <input 
-                      [id]="deliveryOptions.id"
-                      type="radio"
-                      [value]="deliveryOptions.id"
-                      formControlName="deliveryOption" 
-                      (change)="onDeliveryChange(deliveryOptions.id)"
-                      class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600" 
-                      [checked]="deliveryOptions.checked" />
-                    </div>
-    
-                    <div class="ms-4 text-sm">
-                      <label [for]="deliveryOptions.id" class="font-medium leading-none text-gray-900 dark:text-white"> 
-                        {{deliveryOptions.label}} 
-                      </label>
-                      <p id="dhl-text" class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
-                        Get it by {{deliveryOptions.deliveryDate}}
-                      </p>
-                      <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
-                        Price: {{deliveryOptions.price | currency}}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Delivery Methods -->
-  
-            <!-- Promo Code -->
+<div
+  class="flex items-center justify-center p-6 max-w-7xl mx-auto bg-white rounded-lg shadow-lg dark:bg-gray-800"
+>
+  <form
+    [formGroup]="checkoutForm"
+    (ngSubmit)="onSubmit()"
+    class="mx-auto max-w-screen-xl px-4 2xl:px-0"
+  >
+    <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16">
+      <div class="min-w-0 flex-1 space-y-8">
+        <!-- Delivery Details -->
+        <div class="space-y-4">
+          <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Delivery Details</h2>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label for="voucher" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"> Enter a gift card, voucher or promotional code </label>
-              <div class="flex max-w-md items-center gap-4">
-                <input 
-                  type="text" 
-                  id="voucher" 
-                  class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                  formControlName="promotionalCode"
-                  maxlength="6"/>
-                <button 
-                  (click)="applyPromo()"
-                  type="button" 
-                  [disabled]="checkoutForm.get('promotionalCode')?.invalid || checkoutForm.get('promotionalCode')?.value?.length !== 6"
-                  class="flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                  Apply
-                </button>
+              <label
+                for="your_name"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+                First name
+              </label>
+              <input
+                type="text"
+                id="your_name"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                [ngClass]="{
+                  'border-gray-300 dark:border-gray-600':
+                    !checkoutForm.get('firstName')?.invalid ||
+                    !checkoutForm.get('firstName')?.touched,
+                  'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:focus:ring-red-500':
+                    checkoutForm.get('firstName')?.invalid &&
+                    checkoutForm.get('firstName')?.touched,
+                }"
+                placeholder="First Name"
+                required
+                formControlName="firstName"
+              />
+              <div
+                *ngIf="
+                  checkoutForm.get('firstName')?.invalid && checkoutForm.get('firstName')?.touched
+                "
+                class="text-red-500 text-sm mt-1"
+              >
+                First name is required.
               </div>
             </div>
-            <!-- Promo Code -->
-        </div>
-    
-        <div class="mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md">
-            <div class="space-y-4">
-              <div class="space-y-2">
-                <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Subtotal</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{ getCartSubTotal() | async | currency }}</dd>
-                </dl>
 
-                <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Tax</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{ getTaxAmount() | async | currency }}</dd>
-                </dl>
-
-                <dl class="flex items-center justify-between gap-4">
-                  <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Delivery</dt>
-                  <dd class="text-base font-medium text-gray-900 dark:text-white">{{ selectedPaymentPrice | currency }}</dd>
-                </dl>
+            <div>
+              <label
+                for="your_surname"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Last name
+              </label>
+              <input
+                type="email"
+                id="your_surname"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                [ngClass]="{
+                  'border-gray-300 dark:border-gray-600':
+                    !checkoutForm.get('lastName')?.invalid ||
+                    !checkoutForm.get('lastName')?.touched,
+                  'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:focus:ring-red-500':
+                    checkoutForm.get('lastName')?.invalid && checkoutForm.get('lastName')?.touched,
+                }"
+                placeholder="Last Name"
+                required
+                formControlName="lastName"
+              />
+              <div
+                *ngIf="
+                  checkoutForm.get('lastName')?.invalid && checkoutForm.get('lastName')?.touched
+                "
+                class="text-red-500 text-sm mt-1"
+              >
+                Last name is required.
               </div>
+            </div>
 
-              <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700">
-                <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
-                <dd class="text-base font-bold text-gray-900 dark:text-white">{{ getTotalWithTax() | async | currency }}</dd>
+            <div>
+              <div class="mb-2 flex items-center gap-2">
+                <label
+                  for="select-country-input-3"
+                  class="block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Country*
+                </label>
+              </div>
+              <select
+                id="select-country-input-3"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                [ngClass]="{
+                  'border-gray-300 dark:border-gray-600':
+                    !checkoutForm.get('country')?.invalid || !checkoutForm.get('country')?.touched,
+                  'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:focus:ring-red-500':
+                    checkoutForm.get('country')?.invalid && checkoutForm.get('country')?.touched,
+                }"
+                formControlName="country"
+              >
+                <option *ngFor="let selectedCountry of countries" [ngValue]="selectedCountry">
+                  {{ selectedCountry.name }}
+                </option>
+              </select>
+              <div
+                *ngIf="checkoutForm.get('country')?.invalid && checkoutForm.get('country')?.touched"
+                class="text-red-500 text-sm mt-1"
+              >
+                Country is required.
+              </div>
+            </div>
+
+            <div>
+              <div class="mb-2 flex items-center gap-2">
+                <label
+                  for="select-city-input-3"
+                  class="block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  City*
+                </label>
+              </div>
+              <select
+                id="select-city-input-3"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                [ngClass]="{
+                  'border-gray-300 dark:border-gray-600':
+                    !checkoutForm.get('city')?.invalid || !checkoutForm.get('city')?.touched,
+                  'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:focus:ring-red-500':
+                    checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched,
+                }"
+                formControlName="city"
+              >
+                <option *ngFor="let city of cities" [value]="city">
+                  {{ city }}
+                </option>
+              </select>
+              <div
+                *ngIf="checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched"
+                class="text-red-500 text-sm mt-1"
+              >
+                City is required.
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="phone-input-3"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Phone Number*
+              </label>
+              <div class="flex items-center">
+                <!-- Country code and flag -->
+                <button
+                  id="dropdown-phone-button"
+                  (click)="isDropdownOpen = !isDropdownOpen"
+                  class="z-10 inline-flex shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+                  type="button"
+                  data-dropdown-toggle="dropdown-phone"
+                >
+                  <span [innerHTML]="getSafeSvg(selectedCountryFlag)" class="h-4 w-4 me-2"></span>
+                  {{ selectedCountryCode }}
+                  <svg
+                    class="-me-0.5 ms-2 h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 9-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <!-- Country code and flag -->
+
+                <div
+                  id="dropdown-phone"
+                  class="z-10 hidden w-56 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700"
+                >
+                  <ul
+                    class="p-2 text-sm font-medium text-gray-700 dark:text-gray-200"
+                    aria-labelledby="dropdown-phone-button"
+                  >
+                    <li *ngFor="let countryFlags of countryFlag">
+                      <button
+                        type="button"
+                        (click)="changeCountryCode(countryFlags.code)"
+                        class="inline-flex w-full rounded-md px-3 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        <span
+                          [innerHTML]="getSafeSvg(countryFlags.svg)"
+                          class="me-2 h-4 w-4"
+                        ></span>
+                        {{ countryFlags.name }} ({{ countryFlags.code }})
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <div class="relative w-full">
+                  <input
+                    type="text"
+                    id="phone-input"
+                    class="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500"
+                    [ngClass]="{
+                      'border-gray-300 dark:border-gray-600':
+                        !checkoutForm.get('phoneNumber')?.invalid ||
+                        !checkoutForm.get('phoneNumber')?.touched,
+                      'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:focus:ring-red-500':
+                        checkoutForm.get('phoneNumber')?.invalid &&
+                        checkoutForm.get('phoneNumber')?.touched,
+                    }"
+                    required
+                    formControlName="phoneNumber"
+                    maxlength="10"
+                  />
+                  <div
+                    *ngIf="
+                      checkoutForm.get('phoneNumber')?.invalid &&
+                      checkoutForm.get('phoneNumber')?.touched
+                    "
+                    class="text-red-500 text-sm mt-1"
+                  >
+                    Phone number is required.
+                  </div>
+                  <div
+                    *ngIf="checkoutForm.get('phoneNumber')?.hasError('pattern')"
+                    class="text-red-500 text-sm mt-1"
+                  >
+                    Only digits are allowed.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label
+                for="email"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                [ngClass]="{
+                  'border-gray-300 dark:border-gray-600':
+                    !checkoutForm.get('emailAddress')?.invalid ||
+                    !checkoutForm.get('emailAddress')?.touched,
+                  'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500 dark:focus:ring-red-500':
+                    checkoutForm.get('emailAddress')?.invalid &&
+                    checkoutForm.get('emailAddress')?.touched,
+                }"
+                placeholder="Email Address"
+                required
+                formControlName="emailAddress"
+              />
+              <div
+                *ngIf="
+                  checkoutForm.get('emailAddress')?.invalid &&
+                  checkoutForm.get('emailAddress')?.touched
+                "
+                class="text-red-500 text-sm mt-1"
+              >
+                Email address is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Delivery Details -->
+
+        <!-- Payment Section -->
+        <div class="space-y-4">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Payment</h3>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div
+              *ngFor="let method of payments"
+              class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800"
+            >
+              <div class="flex items-start">
+                <div class="flex h-5 items-center">
+                  <!-- Bind the form control -->
+                  <input
+                    [id]="method.id"
+                    [value]="method.id"
+                    formControlName="paymentOption"
+                    type="radio"
+                    (change)="onPaymentMethodChange(method.id)"
+                    [checked]="method.checked"
+                    class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                  />
+                </div>
+                <div class="ms-4 text-sm">
+                  <label
+                    [for]="method.id"
+                    class="font-medium leading-none text-gray-900 dark:text-white"
+                  >
+                    {{ method.label }}
+                  </label>
+                  <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
+                    {{ method.description }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Payment Section -->
+
+        <!-- Delivery Methods -->
+        <div class="space-y-4">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Delivery Methods</h3>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div
+              *ngFor="let deliveryOptions of delivery"
+              class="rounded-lg border border-gray-200 bg-gray-50 p-4 ps-4 dark:border-gray-700 dark:bg-gray-800"
+            >
+              <div class="flex items-start">
+                <div class="flex h-5 items-center">
+                  <input
+                    [id]="deliveryOptions.id"
+                    type="radio"
+                    [value]="deliveryOptions.id"
+                    formControlName="deliveryOption"
+                    (change)="onDeliveryChange(deliveryOptions.id)"
+                    class="h-4 w-4 border-gray-300 bg-white text-primary-600 focus:ring-2 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                    [checked]="deliveryOptions.checked"
+                  />
+                </div>
+
+                <div class="ms-4 text-sm">
+                  <label
+                    [for]="deliveryOptions.id"
+                    class="font-medium leading-none text-gray-900 dark:text-white"
+                  >
+                    {{ deliveryOptions.label }}
+                  </label>
+                  <p
+                    id="dhl-text"
+                    class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
+                  >
+                    Get it by {{ deliveryOptions.deliveryDate }}
+                  </p>
+                  <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
+                    Price: {{ deliveryOptions.price | currency }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Delivery Methods -->
+
+        <!-- Promo Code -->
+        <div>
+          <label for="voucher" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+            Enter a gift card, voucher or promotional code
+          </label>
+          <div class="flex max-w-md items-center gap-4">
+            <input
+              type="text"
+              id="voucher"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+              formControlName="promotionalCode"
+              maxlength="6"
+            />
+            <button
+              type="button"
+              [disabled]="
+                checkoutForm.get('promotionalCode')?.invalid ||
+                checkoutForm.get('promotionalCode')?.value?.length !== 6
+              "
+              class="flex items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+        <!-- Promo Code -->
+      </div>
+
+      <div class="mt-6 w-full space-y-6 sm:mt-8 lg:mt-0 lg:max-w-xs xl:max-w-md">
+        <div class="space-y-4">
+          <div class="space-y-2">
+            <dl class="flex items-center justify-between gap-4">
+              <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Subtotal</dt>
+              <dd class="text-base font-medium text-gray-900 dark:text-white">
+                {{ getCartSubTotal() | async | currency }}
+              </dd>
+            </dl>
+
+            <dl class="flex items-center justify-between gap-4">
+              <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Tax</dt>
+              <dd class="text-base font-medium text-gray-900 dark:text-white">
+                {{ getTaxAmount() | async | currency }}
+              </dd>
+            </dl>
+
+            <dl class="flex items-center justify-between gap-4">
+              <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Delivery</dt>
+              <dd class="text-base font-medium text-gray-900 dark:text-white">
+                {{ selectedPaymentPrice | currency }}
+              </dd>
+            </dl>
+
+            <div *ngIf="checkoutForm.get('promotionalCode')?.value?.length === 6">
+              <dl class="flex items-center justify-between gap-4">
+                <dt class="text-base font-normal text-green-500 dark:text-gray-400">Promo</dt>
+                <dd class="text-base font-medium text-gray-900 dark:text-white">
+                  {{ getPromo() | async | currency }}
+                </dd>
               </dl>
             </div>
-    
-            <div class="space-y-3">
-              <button [routerLink]="['/thank-you']" type="submit" class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                Place Order
-              </button>
-              <p class="text-sm font-normal text-gray-500 dark:text-gray-400">One or more items in your cart require an account. 
-                <a [routerLink]="['/login']" class="font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">Sign in or create an account now.</a>
-              </p>
-              <a [routerLink]="['/product-details']" class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500">
-                Return to Shopping
-                <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
-                </svg>
-              </a>
-            </div>
+          </div>
+
+          <dl
+            class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2 dark:border-gray-700"
+          >
+            <dt class="text-base font-bold text-gray-900 dark:text-white">Total</dt>
+            <dd class="text-base font-bold text-gray-900 dark:text-white">
+              {{ getTotalWithTax() | async | currency }}
+            </dd>
+          </dl>
+        </div>
+
+        <div class="space-y-3">
+          <button
+            type="submit"
+            class="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          >
+            Place Order
+          </button>
+          <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
+            One or more items in your cart require an account.
+            <a
+              [routerLink]="['/login']"
+              class="font-medium text-primary-700 underline hover:no-underline dark:text-primary-500"
+              >Sign in or create an account now.</a
+            >
+          </p>
+          <a
+            [routerLink]="['/product-details']"
+            class="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-primary-500"
+          >
+            Return to Shopping
+            <svg
+              class="h-5 w-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 12H5m14 0-4 4m4-4-4-4"
+              />
+            </svg>
+          </a>
         </div>
       </div>
-    </form>
+    </div>
+  </form>
 </div>

@@ -44,6 +44,10 @@ export class EcommerceserviceService {
     this.cartService.decreaseQuantity(productId);
   }
 
+  getPromotionalDiscount(): Observable<number> {
+    return this.cartService.getPromotionalDiscount();
+  }
+
   getCartTotal(): Observable<number> {
     return this.cartService.getCartTotal();
   }
