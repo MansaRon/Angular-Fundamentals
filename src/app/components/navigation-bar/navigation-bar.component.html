@@ -1,36 +1,99 @@
-  <nav class="bg-gray-800">
-    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-      <div class="relative flex h-16 items-center justify-between">
-        <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-          <div class="flex flex-shrink-0 items-center">
-            <a href="https://flowbite.com" class="flex items-center space-x-3 rtl:space-x-reverse">
-              <!-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> -->
-            </a>
-          </div>
+<nav class="bg-gray-800">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="relative flex h-16 items-center justify-between">
+      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+        <div class="flex flex-shrink-0 items-center">
+          <a href="https://flowbite.com" class="flex items-center space-x-3 rtl:space-x-reverse">
+          </a>
         </div>
-        <div (click)="viewItemsInCart()" class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-          <div class="t-0 left-3">
-            <p *ngIf="(productsInCart$ | async)?.length" class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white">
-              {{ (productsInCart$ | async)?.length }}
-            </p>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="file: mt-4 h-6 w-6 text-white group-hover:text-red-500 transition-colors">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-          </svg>                    
+      </div>
+      <div
+        (click)="viewItemsInCart()"
+        class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+      >
+        <div class="t-0 left-3">
+          <p
+            *ngIf="(productsInCart$ | async)?.length"
+            class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white"
+          >
+            {{ (productsInCart$ | async)?.length }}
+          </p>
         </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          class="file: mt-4 h-6 w-6 text-white group-hover:text-red-500 transition-colors"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+          />
+        </svg>
+      </div>
 
-        <div (click)="viewWishList()" class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-          <div class="t-0 left-3">
-            <p *ngIf="(wishListItems$ | async)?.length" class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white">
-              {{ (wishListItems$ | async)?.length }}
-            </p>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="float-end mt-4 w-6 h-6 text-white group-hover:text-red-500 transition-colors duration-300">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-          </svg>
+      <div
+        (click)="viewWishList()"
+        class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+      >
+        <div class="t-0 left-3">
+          <p
+            *ngIf="(wishListItems$ | async)?.length"
+            class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-4 text-sm text-white"
+          >
+            {{ (wishListItems$ | async)?.length }}
+          </p>
         </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          class="float-end mt-4 w-6 h-6 text-white group-hover:text-red-500 transition-colors duration-300"
+        >
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+      </div>
 
+      <div
+        class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+      >
+        <div class="t-0 left-3 mt-4">
+          <ng-container *ngIf="isLogged$ | async; else userIcon">
+            <span class="text-white text-sm font-medium">User</span>
+          </ng-container>
+          <ng-template #userIcon>
+            <svg
+              class="float-end w-6 h-6 text-white group-hover:text-red-500 transition-colors duration-300"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              routerLink="/login"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </ng-template>
+        </div>
+      </div>
 
+      <div
+        class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+      >
+        <div class="t-0 left-3 mt-4">
+          <ng-container *ngIf="isLogged$ | async">
+            <span class="text-white text-sm font-medium" (click)="logout()">Logout</span>
+          </ng-container>
+        </div>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>

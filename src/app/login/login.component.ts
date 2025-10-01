@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +67,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     // check if user was redirected from checkout page or logging in for 1st time
     console.log(this.loginForm.value);
-    localStorage.setItem('isLogged', 'true');
+    this.authService.login();
     const target = this.returnUrl || '/product-details';
     this.router.navigate([target], {
       state: this.forwardState || undefined,
