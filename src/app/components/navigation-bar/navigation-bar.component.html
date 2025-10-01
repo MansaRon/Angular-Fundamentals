@@ -60,19 +60,20 @@
       <div
         class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
       >
-        <div class="t-0 left-3">
+        <div class="t-0 left-3 mt-4">
           <ng-container *ngIf="isLogged$ | async; else userIcon">
             <span class="text-white text-sm font-medium">User</span>
           </ng-container>
           <ng-template #userIcon>
             <svg
-              class="float-end mt-4 w-6 h-6 text-white group-hover:text-red-500 transition-colors duration-300"
+              class="float-end w-6 h-6 text-white group-hover:text-red-500 transition-colors duration-300"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
               fill="currentColor"
               viewBox="0 0 24 24"
+              routerLink="/login"
             >
               <path
                 fill-rule="evenodd"
@@ -81,6 +82,16 @@
               />
             </svg>
           </ng-template>
+        </div>
+      </div>
+
+      <div
+        class="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+      >
+        <div class="t-0 left-3 mt-4">
+          <ng-container *ngIf="isLogged$ | async">
+            <span class="text-white text-sm font-medium" (click)="logout()">Logout</span>
+          </ng-container>
         </div>
       </div>
     </div>

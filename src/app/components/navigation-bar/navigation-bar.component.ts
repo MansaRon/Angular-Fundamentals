@@ -36,4 +36,8 @@ export class NavigationBarComponent implements OnInit {
   viewWishList(): void {
     this.router.navigate(['/wishlist']);
   }
+
+  logout(): void {
+    this.authService.logout();
+  }
 }
